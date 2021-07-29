@@ -119,8 +119,7 @@ namespace FindJob_2_API.Controllers
         [HttpPut]
         public JsonResult Put(Client client)
         {
-            Client up_client = _db.Clients.FirstOrDefault(c => c.Id == client.Id);
-            up_client.Name = client.Name;
+            _db.Clients.FirstOrDefault(c => c.Id == client.Id).Name = client.Name;
             _db.SaveChanges();
 
             return new JsonResult("Putted Successfully");

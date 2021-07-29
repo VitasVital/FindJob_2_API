@@ -7,7 +7,16 @@ namespace FindJob_2_API.Models
 {
     public partial class WorkSchedule
     {
+        public WorkSchedule()
+        {
+            Resumes = new HashSet<Resume>();
+            Vacancies = new HashSet<Vacancy>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
+
+        public virtual ICollection<Resume> Resumes { get; set; }
+        public virtual ICollection<Vacancy> Vacancies { get; set; }
     }
 }
