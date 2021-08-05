@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {Modal,Button, Row, Col, Form} from 'react-bootstrap';
 
-export class EditCltModal extends Component{
+export class LoginModal extends Component{
     constructor(props){
         super(props);
         this.handleSubmit=this.handleSubmit.bind(this);
@@ -9,25 +9,32 @@ export class EditCltModal extends Component{
 
     handleSubmit(event){
         event.preventDefault();
-        fetch(process.env.REACT_APP_API+'client',{
-            method:'PUT',
+        fetch(process.env.REACT_APP_API+'login',{
+            method:'POST',
             headers:{
                 'Accept':'application/json',
                 'Content-Type':'application/json'
             },
             body:JSON.stringify({
-                //Id:event.target.Id.value,
-                //Name:event.target.Name.value
-                //Id: event.target.id.value,
-                Name: event.target.name.value,
-                Email: 'rwef',
-                Password: 'ewfwfw',
-                TelephoneNumber: '234234'
+                Email: event.target.email.value,
+                Password: event.target.password.value
             })
         })
         .then(res=>res.json())
         .then((result)=>{
-            alert(result);
+            if (result === 'Успешная авторизация')
+            {
+                document.cookie = "email" + "=" + encodeURIComponent(event.target.email.value);
+                document.cookie = "password" + "=" + encodeURIComponent(event.target.password.value);
+                let matches = document.cookie.match(new RegExp(
+                    "(?:^|; )" + 'email'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+                  ));
+                alert(result + " " + decodeURIComponent(matches[1]));
+            }
+            else
+            {
+                alert(result);
+            }
         },
         (error)=>{
             alert('Failed');
@@ -45,7 +52,7 @@ export class EditCltModal extends Component{
                 >
                     <Modal.Header clooseButton>
                         <Modal.Title id="contained-modal-title-vcenter">
-                            Edit Client
+                            Add Client
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
@@ -53,24 +60,20 @@ export class EditCltModal extends Component{
                         <Row>
                             <Col sm={6}>
                                 <Form onSubmit={this.handleSubmit}>
-                                    <Form.Group controlId="id">
-                                        <Form.Label>Id client</Form.Label>
-                                        <Form.Control type="number" name="id" required
-                                        disabled
-                                        defaultValue={this.props.depid} 
-                                        placeholder="Name"/>
-                                    </Form.Group>
-
                                     <Form.Group controlId="name">
-                                        <Form.Label>Name client</Form.Label>
-                                        <Form.Control type="text" name="name" required 
-                                        defaultValue={this.props.depname}
-                                        placeholder="Name"/>
+                                        <Form.Label>Логин</Form.Label>
+                                        <Form.Control type="text" name="email" required 
+                                        placeholder="Логин"/>
+                                    </Form.Group>
+                                    <Form.Group controlId="name">
+                                        <Form.Label>Пароль</Form.Label>
+                                        <Form.Control type="password" name="password" required 
+                                        placeholder="Пароль"/>
                                     </Form.Group>
 
                                     <Form.Group>
                                         <Button variant="primary" type="submit">
-                                            Update Client
+                                            Войти
                                         </Button>
                                     </Form.Group>
                                 </Form>
@@ -79,7 +82,7 @@ export class EditCltModal extends Component{
                     </Modal.Body>
                     
                     <Modal.Footer>
-                        <Button variant="danger" onClick={this.props.onHide}>Close</Button>
+                        <Button variant="danger" onClick={this.props.onHide}>Закрыть</Button>
                     </Modal.Footer>
 
                 </Modal>

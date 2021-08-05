@@ -18,7 +18,6 @@ export class AddCltModal extends Component{
             body:JSON.stringify({
                 //Id:null,
                 //Name:event.target.Name.value
-                Id: null,
                 Name: event.target.name.value,
                 Email: null,
                 Password: null,

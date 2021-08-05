@@ -30,6 +30,7 @@ namespace FindJob_2_API.Models
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Vacancy> Vacancies { get; set; }
         public virtual DbSet<VacancyKeySkill> VacancyKeySkills { get; set; }
+        public virtual DbSet<WorkExperience> WorkExperiences { get; set; }
         public virtual DbSet<WorkSchedule> WorkSchedules { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -192,10 +193,7 @@ namespace FindJob_2_API.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.WorkExperience)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("Work_experience");
+                entity.Property(e => e.WorkExperienceId).HasColumnName("Work_experienceId");
 
                 entity.Property(e => e.WorkScheduleId).HasColumnName("Work_scheduleId");
 
@@ -208,6 +206,11 @@ namespace FindJob_2_API.Models
                     .WithMany(p => p.Resumes)
                     .HasForeignKey(d => d.EmploymentId)
                     .HasConstraintName("FK_Resume_Employment_Id");
+
+                entity.HasOne(d => d.WorkExperience)
+                    .WithMany(p => p.Resumes)
+                    .HasForeignKey(d => d.WorkExperienceId)
+                    .HasConstraintName("FK_Resume_Work_experience_Id");
 
                 entity.HasOne(d => d.WorkSchedule)
                     .WithMany(p => p.Resumes)
@@ -256,8 +259,6 @@ namespace FindJob_2_API.Models
                     .IsUnicode(false)
                     .HasColumnName("Job_title");
 
-                entity.Property(e => e.KeySkillsId).HasColumnName("Key_skillsId");
-
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -276,10 +277,7 @@ namespace FindJob_2_API.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.WorkExperience)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("Work_experience");
+                entity.Property(e => e.WorkExperienceId).HasColumnName("Work_experienceId");
 
                 entity.Property(e => e.WorkScheduleId).HasColumnName("Work_scheduleId");
 
@@ -288,10 +286,10 @@ namespace FindJob_2_API.Models
                     .HasForeignKey(d => d.CityId)
                     .HasConstraintName("FK_Vacancy_City_Id");
 
-                entity.HasOne(d => d.KeySkills)
+                entity.HasOne(d => d.WorkExperience)
                     .WithMany(p => p.Vacancies)
-                    .HasForeignKey(d => d.KeySkillsId)
-                    .HasConstraintName("FK_Vacancy_Key_skills_Id");
+                    .HasForeignKey(d => d.WorkExperienceId)
+                    .HasConstraintName("FK_Vacancy_Work_experience_Id");
 
                 entity.HasOne(d => d.WorkSchedule)
                     .WithMany(p => p.Vacancies)
@@ -314,6 +312,15 @@ namespace FindJob_2_API.Models
                     .WithMany(p => p.VacancyKeySkills)
                     .HasForeignKey(d => d.VacancyId)
                     .HasConstraintName("FK_Vacancy_Key_skills_Vacancy_Id");
+            });
+
+            modelBuilder.Entity<WorkExperience>(entity =>
+            {
+                entity.ToTable("Work_experience");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<WorkSchedule>(entity =>

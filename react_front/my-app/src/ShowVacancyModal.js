@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {Modal,Button, Row, Col, Form} from 'react-bootstrap';
 
-export class EditCltModal extends Component{
+export class ShowVacancyModal extends Component{
     constructor(props){
         super(props);
         this.handleSubmit=this.handleSubmit.bind(this);
@@ -9,20 +9,17 @@ export class EditCltModal extends Component{
 
     handleSubmit(event){
         event.preventDefault();
-        fetch(process.env.REACT_APP_API+'client',{
-            method:'PUT',
+        fetch(process.env.REACT_APP_API+'vacancy',{
+            method:'POST',
             headers:{
                 'Accept':'application/json',
                 'Content-Type':'application/json'
             },
             body:JSON.stringify({
-                //Id:event.target.Id.value,
+                //Id:null,
                 //Name:event.target.Name.value
-                //Id: event.target.id.value,
-                Name: event.target.name.value,
-                Email: 'rwef',
-                Password: 'ewfwfw',
-                TelephoneNumber: '234234'
+                VacancyId: this.props.depid,
+                ClientId: 1
             })
         })
         .then(res=>res.json())
@@ -45,32 +42,21 @@ export class EditCltModal extends Component{
                 >
                     <Modal.Header clooseButton>
                         <Modal.Title id="contained-modal-title-vcenter">
-                            Edit Client
+                            Проссмотр вакансии
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-
+                        <div>
+                            <h2>{this.props.depname}</h2>
+                            <h4>{this.props.depsalary}</h4>
+                            <p>{this.props.depdescription}</p>
+                        </div>
                         <Row>
                             <Col sm={6}>
                                 <Form onSubmit={this.handleSubmit}>
-                                    <Form.Group controlId="id">
-                                        <Form.Label>Id client</Form.Label>
-                                        <Form.Control type="number" name="id" required
-                                        disabled
-                                        defaultValue={this.props.depid} 
-                                        placeholder="Name"/>
-                                    </Form.Group>
-
-                                    <Form.Group controlId="name">
-                                        <Form.Label>Name client</Form.Label>
-                                        <Form.Control type="text" name="name" required 
-                                        defaultValue={this.props.depname}
-                                        placeholder="Name"/>
-                                    </Form.Group>
-
                                     <Form.Group>
                                         <Button variant="primary" type="submit">
-                                            Update Client
+                                            Откликнуться
                                         </Button>
                                     </Form.Group>
                                 </Form>
@@ -79,7 +65,7 @@ export class EditCltModal extends Component{
                     </Modal.Body>
                     
                     <Modal.Footer>
-                        <Button variant="danger" onClick={this.props.onHide}>Close</Button>
+                        <Button variant="danger" onClick={this.props.onHide}>Закрыть</Button>
                     </Modal.Footer>
 
                 </Modal>

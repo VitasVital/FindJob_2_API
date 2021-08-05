@@ -10,7 +10,6 @@ namespace FindJob_2_API.Models
         public KeySkill()
         {
             ResumeKeySkills = new HashSet<ResumeKeySkill>();
-            Vacancies = new HashSet<Vacancy>();
             VacancyKeySkills = new HashSet<VacancyKeySkill>();
         }
 
@@ -18,7 +17,6 @@ namespace FindJob_2_API.Models
         public string Name { get; set; }
 
         public virtual ICollection<ResumeKeySkill> ResumeKeySkills { get; set; }
-        public virtual ICollection<Vacancy> Vacancies { get; set; }
         public virtual ICollection<VacancyKeySkill> VacancyKeySkills { get; set; }
     }
 }

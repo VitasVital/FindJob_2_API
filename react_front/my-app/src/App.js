@@ -5,6 +5,8 @@ import {Home} from './Home';
 import {Client} from './Client';
 import {Phone} from './Phone';
 import {Navigation} from './Navigation';
+import { Vacancy } from './Vacancy';
+import { Authentication } from './Authentication';
 
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
@@ -13,7 +15,7 @@ function App() {
     <BrowserRouter>
     <div className="container">
       <h3 className = "m-3 d-flex justify-content-center">
-        React JS Tutorial
+        Веб-приложение по поиску работы
       </h3>
       <Navigation/>
 
@@ -21,6 +23,8 @@ function App() {
         <Route path ='/' component={Home} exact/>
         <Route path='/Client' component={Client}/>
         <Route path='/Phone' component={Phone}/>
+        <Route path='/Vacancy' component={Vacancy}/>
+        <Route path='/Authentication' component={Authentication}/>
       </Switch>
     </div>
     </BrowserRouter>

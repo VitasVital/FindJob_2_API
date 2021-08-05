@@ -20,10 +20,11 @@ namespace FindJob_2_API.Models
         public int? WorkScheduleId { get; set; }
         public string Photo { get; set; }
         public string Education { get; set; }
-        public string WorkExperience { get; set; }
+        public int? WorkExperienceId { get; set; }
 
         public virtual Client Client { get; set; }
         public virtual Employment Employment { get; set; }
+        public virtual WorkExperience WorkExperience { get; set; }
         public virtual WorkSchedule WorkSchedule { get; set; }
         public virtual ICollection<ResumeKeySkill> ResumeKeySkills { get; set; }
     }
