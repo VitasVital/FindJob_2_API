@@ -9,22 +9,23 @@ export class Authentication extends Component{
 
     constructor(props){
         super(props);
-        let matches = document.cookie.match(new RegExp(
-            "(?:^|; )" + 'email'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-          ));
-        let result = matches[1];
-        this.state={loginModalShow:false, registrationModalShow:false, result}
+        // let matches = document.cookie.match(new RegExp(
+        //     "(?:^|; )" + 'email'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        //   ));
+        // let result = matches[1];
+        //this.state={loginModalShow:false, registrationModalShow:false, result}
+        this.state={loginModalShow:false, registrationModalShow:false}
         
     }
 
     render(){
         let loginModalClose=()=>this.setState({loginModalShow:false});
         let registrationModalClose=()=>this.setState({registrationModalShow:false});
-        let showResult=()=>this.state.result !== undefined ? 'Вы вошли под логином ' + this.state.result : '';
+        //let showResult=()=>this.state.result !== undefined ? 'Вы вошли под логином ' + this.state.result : '';
         //придумать вывод имени из куки
         return(
             <div >
-                <p>{showResult}</p>
+                {/* <p>{showResult}</p> */}
                 <ButtonToolbar>
                 <Button variant='primary'
                     onClick={()=>this.setState({loginModalShow:true})}>

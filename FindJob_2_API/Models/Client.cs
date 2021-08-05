@@ -18,15 +18,13 @@ namespace FindJob_2_API.Models
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public int? CityId { get; set; }
+        public string City { get; set; }
         public DateTime? DateBirth { get; set; }
         public int? GenderId { get; set; }
-        public int? CitizenshipId { get; set; }
+        public string Citizenship { get; set; }
         public string TelephoneNumber { get; set; }
         public int? RoleId { get; set; }
 
-        public virtual Citizenship Citizenship { get; set; }
-        public virtual City City { get; set; }
         public virtual Gender Gender { get; set; }
         public virtual Role Role { get; set; }
         public virtual ICollection<ResponseFromClientToVacancy> ResponseFromClientToVacancies { get; set; }

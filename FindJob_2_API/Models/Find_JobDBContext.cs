@@ -17,9 +17,8 @@ namespace FindJob_2_API.Models
         {
         }
 
-        public virtual DbSet<Citizenship> Citizenships { get; set; }
-        public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Client> Clients { get; set; }
+        public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<Employment> Employments { get; set; }
         public virtual DbSet<Gender> Genders { get; set; }
         public virtual DbSet<KeySkill> KeySkills { get; set; }
@@ -46,27 +45,17 @@ namespace FindJob_2_API.Models
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Cyrillic_General_CI_AS");
 
-            modelBuilder.Entity<Citizenship>(entity =>
-            {
-                entity.ToTable("Citizenship");
-
-                entity.Property(e => e.Name)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<City>(entity =>
-            {
-                entity.ToTable("City");
-
-                entity.Property(e => e.Name)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-            });
-
             modelBuilder.Entity<Client>(entity =>
             {
                 entity.ToTable("Client");
+
+                entity.Property(e => e.Citizenship)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.City)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.DateBirth).HasColumnType("date");
 
@@ -86,16 +75,6 @@ namespace FindJob_2_API.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.Citizenship)
-                    .WithMany(p => p.Clients)
-                    .HasForeignKey(d => d.CitizenshipId)
-                    .HasConstraintName("FK_Client_Citizenship_Id");
-
-                entity.HasOne(d => d.City)
-                    .WithMany(p => p.Clients)
-                    .HasForeignKey(d => d.CityId)
-                    .HasConstraintName("FK_Client_City_Id");
-
                 entity.HasOne(d => d.Gender)
                     .WithMany(p => p.Clients)
                     .HasForeignKey(d => d.GenderId)
@@ -105,6 +84,15 @@ namespace FindJob_2_API.Models
                     .WithMany(p => p.Clients)
                     .HasForeignKey(d => d.RoleId)
                     .HasConstraintName("FK_Client_Role_Id");
+            });
+
+            modelBuilder.Entity<Company>(entity =>
+            {
+                entity.ToTable("Company");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Employment>(entity =>
@@ -248,6 +236,10 @@ namespace FindJob_2_API.Models
             {
                 entity.ToTable("Vacancy");
 
+                entity.Property(e => e.City)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Conditions).HasColumnType("text");
 
                 entity.Property(e => e.Description).HasColumnType("text");
@@ -281,10 +273,10 @@ namespace FindJob_2_API.Models
 
                 entity.Property(e => e.WorkScheduleId).HasColumnName("Work_scheduleId");
 
-                entity.HasOne(d => d.City)
+                entity.HasOne(d => d.Company)
                     .WithMany(p => p.Vacancies)
-                    .HasForeignKey(d => d.CityId)
-                    .HasConstraintName("FK_Vacancy_City_Id");
+                    .HasForeignKey(d => d.CompanyId)
+                    .HasConstraintName("FK_Vacancy_Company_Id");
 
                 entity.HasOne(d => d.WorkExperience)
                     .WithMany(p => p.Vacancies)
