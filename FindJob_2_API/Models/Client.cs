@@ -20,13 +20,12 @@ namespace FindJob_2_API.Models
         public string Password { get; set; }
         public string City { get; set; }
         public DateTime? DateBirth { get; set; }
-        public int? GenderId { get; set; }
+        public string Gender { get; set; }
         public string Citizenship { get; set; }
         public string TelephoneNumber { get; set; }
-        public int? RoleId { get; set; }
+        public string Role { get; set; }
+        public bool? IsDeleted { get; set; }
 
-        public virtual Gender Gender { get; set; }
-        public virtual Role Role { get; set; }
         public virtual ICollection<ResponseFromClientToVacancy> ResponseFromClientToVacancies { get; set; }
         public virtual ICollection<ResponseFromVacancyToClient> ResponseFromVacancyToClients { get; set; }
         public virtual ICollection<Resume> Resumes { get; set; }

@@ -20,13 +20,11 @@ namespace FindJob_2_API.Models
         public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<Employment> Employments { get; set; }
-        public virtual DbSet<Gender> Genders { get; set; }
         public virtual DbSet<KeySkill> KeySkills { get; set; }
         public virtual DbSet<ResponseFromClientToVacancy> ResponseFromClientToVacancies { get; set; }
         public virtual DbSet<ResponseFromVacancyToClient> ResponseFromVacancyToClients { get; set; }
         public virtual DbSet<Resume> Resumes { get; set; }
         public virtual DbSet<ResumeKeySkill> ResumeKeySkills { get; set; }
-        public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Vacancy> Vacancies { get; set; }
         public virtual DbSet<VacancyKeySkill> VacancyKeySkills { get; set; }
         public virtual DbSet<WorkExperience> WorkExperiences { get; set; }
@@ -63,6 +61,12 @@ namespace FindJob_2_API.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Gender)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -71,19 +75,13 @@ namespace FindJob_2_API.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.TelephoneNumber)
+                entity.Property(e => e.Role)
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.Gender)
-                    .WithMany(p => p.Clients)
-                    .HasForeignKey(d => d.GenderId)
-                    .HasConstraintName("FK_Client_Gender_Id");
-
-                entity.HasOne(d => d.Role)
-                    .WithMany(p => p.Clients)
-                    .HasForeignKey(d => d.RoleId)
-                    .HasConstraintName("FK_Client_Role_Id");
+                entity.Property(e => e.TelephoneNumber)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Company>(entity =>
@@ -98,15 +96,6 @@ namespace FindJob_2_API.Models
             modelBuilder.Entity<Employment>(entity =>
             {
                 entity.ToTable("Employment");
-
-                entity.Property(e => e.Name)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<Gender>(entity =>
-            {
-                entity.ToTable("Gender");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -221,15 +210,6 @@ namespace FindJob_2_API.Models
                     .WithMany(p => p.ResumeKeySkills)
                     .HasForeignKey(d => d.ResumeId)
                     .HasConstraintName("FK_Resume_Key_skills_Resume_Id");
-            });
-
-            modelBuilder.Entity<Role>(entity =>
-            {
-                entity.ToTable("Role");
-
-                entity.Property(e => e.Name)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Vacancy>(entity =>
