@@ -26,10 +26,7 @@ export class LoginModal extends Component{
             {
                 document.cookie = "email" + "=" + encodeURIComponent(event.target.email.value);
                 document.cookie = "password" + "=" + encodeURIComponent(event.target.password.value);
-                let matches = document.cookie.match(new RegExp(
-                    "(?:^|; )" + 'email'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-                  ));
-                alert(result + " " + decodeURIComponent(matches[1]));
+                alert(result);
             }
             else
             {
@@ -52,7 +49,7 @@ export class LoginModal extends Component{
                 >
                     <Modal.Header clooseButton>
                         <Modal.Title id="contained-modal-title-vcenter">
-                            Add Client
+                            Авторизация
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>

@@ -69,6 +69,7 @@ export class Authentication extends Component{
         .then(data=>{
             this.setState({deps:data});
         });
+        document.cookie = "id" + "=" + encodeURIComponent(this.state.deps.id);
     }
 
     checkCookie() {
@@ -94,8 +95,9 @@ export class Authentication extends Component{
         this.checkCookie();
     }
 
-    exitAccount(email, pass){
+    exitAccount(id, email, pass){
         if(window.confirm('Вы действительно хотите выйти из аккаунта?')){
+            document.cookie = "id=" + {id} + ";" + "max-age=0";
             document.cookie = "email=" + {email} + ";" + "max-age=0";
             document.cookie = "password=" + {pass} + ";" + "max-age=0";
         }
@@ -109,19 +111,10 @@ export class Authentication extends Component{
         "(?:^|; )" + 'password'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
         ));
         return matches_email && matches_pass;
-        // if (matches_email && matches_pass) 
-        // {
-        //     return true;
-        // }
-        // return false;
     }
 
     visibility(showInformation) {
         return showInformation ? 'visible' : 'hidden';
-        // if (showInformation){
-        //     return 'visible'
-        // }
-        // return 'hidden'
     }
 
     render(){
@@ -144,7 +137,7 @@ export class Authentication extends Component{
                     Зарегистрироваться</Button>
 
                     <Button className="mr-2" variant="danger" style={{visibility: autentificatedVisibility }}
-                                        onClick={()=>this.exitAccount(deps.email, deps.password)}>
+                                        onClick={()=>this.exitAccount(deps.id, deps.email, deps.password)}>
                                         Выйти из аккаунта</Button>
 
                     <Button className="mr-2" variant="info" style={{visibility: autentificatedVisibility }}

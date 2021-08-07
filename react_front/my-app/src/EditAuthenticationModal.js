@@ -19,9 +19,10 @@ export class EditAuthenticationModal extends Component{
                 'Content-Type':'application/json'
             },
             body:JSON.stringify({
+                Id: this.props.deps.id,
                 Name: event.target._name.value,
-                Email: this.props.deps.email,
-                Password: this.props.deps.password,
+                Email: event.target.email.value,
+                Password: event.target.password.value,
                 City: event.target.city.value,
                 DateBirth: event.target.dateBirth.value,
                 Gender: event.target.gender.value,
@@ -33,6 +34,8 @@ export class EditAuthenticationModal extends Component{
         })
         .then(res=>res.json())
         .then((result)=>{
+            document.cookie = "email=" + event.target.email.value;
+            document.cookie = "password=" + event.target.password.value;
             alert(result);
         },
         (error)=>{

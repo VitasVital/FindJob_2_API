@@ -61,22 +61,28 @@ namespace FindJob_2_API.Controllers
         [HttpPut]
         public JsonResult Put(Client client)
         {
-            //доработать, не всё изменяется
-            Client _client = _db.Clients.FirstOrDefault(c => c.Email == client.Email && c.Password == client.Password);
-            _client.Name = client.Name;
-            _client.Email = client.Email;
-            _client.Password = client.Password;
-            _client.City = client.City;
-            _client.DateBirth = client.DateBirth;
-            _client.Gender = client.Gender;
-            _client.Citizenship = client.Citizenship;
-            _client.TelephoneNumber = client.TelephoneNumber;
-            _client.Role = client.Role;
+            Client _client = _db.Clients.FirstOrDefault(c => c.Id == client.Id);
+            if (client is null)
+            {
 
-            //_db.Clients.FirstOrDefault(c => c.Email == client.Email && c.Password == client.Password).Name = client.Name;
-            _db.SaveChanges();
+                return new JsonResult("Нет пользователя");
+            }
+            else
+            {
+                _client.Name = client.Name;
+                _client.Email = client.Email;
+                _client.Password = client.Password;
+                _client.City = client.City;
+                _client.DateBirth = client.DateBirth;
+                _client.Gender = client.Gender;
+                _client.Citizenship = client.Citizenship;
+                _client.TelephoneNumber = client.TelephoneNumber;
+                _client.Role = client.Role;
 
-            return new JsonResult("Данные успешно изменены");
+                _db.SaveChanges();
+
+                return new JsonResult("Данные успешно изменены");
+            }
         }
     }
 }

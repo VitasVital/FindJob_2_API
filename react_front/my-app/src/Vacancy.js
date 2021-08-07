@@ -9,7 +9,6 @@ export class Vacancy extends Component{
     constructor(props){
         super(props);
         this.state={deps:[], showModalShow:false}
-        //document.cookie = "user=John"
     }
 
     refreshList(){
@@ -29,7 +28,8 @@ export class Vacancy extends Component{
     }
 
     render(){
-        const {deps, depid,depname,depsalary,depdescription}=this.state;
+        const {deps, depid, depname, depsalary, depdescription, depcity, 
+            depTelephoneNumber, depJobTitle, depRequirements, depDuties, depConditions}=this.state;
         let showModalClose=()=>this.setState({showModalShow:false});
         return(
             <div >
@@ -56,7 +56,13 @@ export class Vacancy extends Component{
                                                 depid:dep.id,
                                                 depname:dep.name,
                                                 depsalary:dep.salary,
-                                                depdescription:dep.description})}>
+                                                depdescription:dep.description,
+                                                depcity:dep.city, 
+                                                depTelephoneNumber:dep.telephoneNumber, 
+                                                depJobTitle:dep.jobTitle, 
+                                                depRequirements:dep.requirements, 
+                                                depDuties:dep.duties, 
+                                                depConditions:dep.conditions})}>
                                                     Проссмотр
                                         </Button>
                                         <ShowVacancyModal show={this.state.showModalShow}
@@ -64,7 +70,13 @@ export class Vacancy extends Component{
                                             depid={depid}
                                             depname={depname}
                                             depsalary={depsalary}
-                                            depdescription={depdescription}/>
+                                            depdescription={depdescription}
+                                            depcity={depcity} 
+                                            depTelephoneNumber={depTelephoneNumber} 
+                                            depJobTitle={depJobTitle} 
+                                            depRequirements={depRequirements} 
+                                            depDuties={depDuties} 
+                                            depConditions={depConditions}/>
                                     </ButtonToolbar>
                                 </td>
                             </tr>)}

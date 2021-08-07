@@ -16,9 +16,6 @@ export class Navigation extends Component {
                         <NavLink className="d-inline p-2 bg-dark text-white" to="/client">
                             Клиенты
                         </NavLink>
-                        <NavLink className="d-inline p-2 bg-dark text-white" to="/phone">
-                            Телефон
-                        </NavLink>
                         <NavLink className="d-inline p-2 bg-dark text-white" to="/vacancy">
                             Вакансии
                         </NavLink>

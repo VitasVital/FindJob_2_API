@@ -3,7 +3,6 @@ import './App.css';
 
 import {Home} from './Home';
 import {Client} from './Client';
-import {Phone} from './Phone';
 import {Navigation} from './Navigation';
 import { Vacancy } from './Vacancy';
 import { Authentication } from './Authentication';
@@ -22,7 +21,6 @@ function App() {
       <Switch>
         <Route path ='/' component={Home} exact/>
         <Route path='/Client' component={Client}/>
-        <Route path='/Phone' component={Phone}/>
         <Route path='/Vacancy' component={Vacancy}/>
         <Route path='/Authentication' component={Authentication}/>
       </Switch>

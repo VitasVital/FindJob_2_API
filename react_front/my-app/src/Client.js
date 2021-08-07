@@ -38,7 +38,7 @@ export class Client extends Component{
         }
     }
     render(){
-        const {deps, depid,depname}=this.state;
+        const {deps, depid, depname}=this.state;
         let addModalClose=()=>this.setState({addModalShow:false});
         let editModalClose=()=>this.setState({editModalShow:false});
         return(
@@ -60,7 +60,8 @@ export class Client extends Component{
                                     <ButtonToolbar>
                                         <Button className="mr-2" variant="info"
                                         onClick={()=>this.setState({editModalShow:true,
-                                            depid:dep.id,depname:dep.name})}>
+                                            depid:dep.id,
+                                            depname:dep.name})}>
                                                 Edit
                                             </Button>
 
