@@ -2,10 +2,10 @@ import logo from './logo.svg';
 import './App.css';
 
 import {Home} from './Home';
-import {Client} from './Client';
 import {Navigation} from './Navigation';
-import { Vacancy } from './Vacancy';
-import { Authentication } from './Authentication';
+import { Vacancy } from './VacancyFolder/Vacancy';
+import { Authentication } from './ClientFolder/Authentication';
+import {VacancyModal} from "./VacancyFolder/VacancyModal";
 
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
@@ -20,9 +20,9 @@ function App() {
 
       <Switch>
         <Route path ='/' component={Home} exact/>
-        <Route path='/Client' component={Client}/>
         <Route path='/Vacancy' component={Vacancy}/>
         <Route path='/Authentication' component={Authentication}/>
+        <Route path='/VacancyModal' component={VacancyModal}/>
       </Switch>
     </div>
     </BrowserRouter>

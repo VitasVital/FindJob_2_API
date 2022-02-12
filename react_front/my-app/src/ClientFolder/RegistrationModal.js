@@ -42,11 +42,11 @@ export class RegistrationModal extends Component{
 
     selectCountry (val) {
         this.setState({ country: val });
-      }
+    }
     
-      selectRegion (val) {
-        this.setState({ region: val });
-      }
+    selectRegion (val) {
+    this.setState({ region: val });
+    }
 
 
     render(){
@@ -107,7 +107,7 @@ export class RegistrationModal extends Component{
 
                                     <Form.Group controlId="name">
                                         <Form.Label>Дата рождения</Form.Label>
-                                        <Form.Control type="date" name="dateBirth" required 
+                                        <Form.Control type="date" name="dateBirth" required
                                         placeholder="Дата рождения"/>
                                     </Form.Group>
                                     <Form.Group controlId="name">
