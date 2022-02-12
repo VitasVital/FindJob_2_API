@@ -22,6 +22,14 @@ namespace FindJob_2_API.Controllers
         {
             return new JsonResult(_db.Clients.FirstOrDefault(c => c.Email == email && c.Password == password && c.IsDeleted != true));
         }
+        [Route("[action]/{id}")]
+        [HttpGet]
+        public JsonResult GetUser(int id)
+        {
+            Client client = _db.Clients.FirstOrDefault(c => c.Id == id);
+
+            return new JsonResult(client);
+        }
 
         [HttpPost]
         public JsonResult Post(Client client)
@@ -34,7 +42,7 @@ namespace FindJob_2_API.Controllers
             }
             else
             {
-                return new JsonResult("Успешная авторизация");
+                return new JsonResult(_client.Id);
             }
         }
 

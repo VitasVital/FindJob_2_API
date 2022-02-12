@@ -71,9 +71,31 @@ export const StockWorkShedule = [
   }
 ];
 
+export const StockGender = [
+  {
+    value: 1,
+    label: 'Мужской'
+  },
+  {
+    value: 2,
+    label: 'Женский'
+  }
+];
+
+export const StockRole = [
+  {
+    value: 1,
+    label: 'Работодатель'
+  },
+  {
+    value: 2,
+    label: 'Соискатель'
+  }
+];
+
   export const StockVacancies = [
     {
-      id: 8,
+      id: 1,
       name: 'Программист C++',
       salary: '70000 руб.',
       description: 'Крутое описание',
@@ -85,7 +107,7 @@ export const StockWorkShedule = [
       conditions: 'Будут условия'
     },
     {
-      id: 9,
+      id: 2,
       name: 'Программист C#',
       salary: '100000 руб.',
       description: 'Крутое описание',
@@ -97,7 +119,7 @@ export const StockWorkShedule = [
       conditions: 'Будут условия'
     },
     {
-      id: 10,
+      id: 3,
       name: 'Программист Python',
       salary: '50000 руб.',
       description: 'Крутое описание',

@@ -35,7 +35,7 @@ namespace FindJob_2_API.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-BH0GV9U\\MSSQLSERVER01;Database=Find_JobDB;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-BH0GV9U;Database=Find_JobDB;Trusted_Connection=True;");
             }
         }
 
@@ -65,7 +65,7 @@ namespace FindJob_2_API.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -216,11 +216,9 @@ namespace FindJob_2_API.Models
             {
                 entity.ToTable("Vacancy");
 
-                entity.Property(e => e.City)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.Conditions).HasColumnType("text");
+
+                entity.Property(e => e.Country).HasColumnType("text");
 
                 entity.Property(e => e.Description).HasColumnType("text");
 
@@ -231,6 +229,10 @@ namespace FindJob_2_API.Models
                     .IsUnicode(false)
                     .HasColumnName("Job_title");
 
+                entity.Property(e => e.MaxSalary).HasColumnName("max_Salary");
+
+                entity.Property(e => e.MinSalary).HasColumnName("min_Salary");
+
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -239,11 +241,9 @@ namespace FindJob_2_API.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Requirements).HasColumnType("text");
+                entity.Property(e => e.Region).HasColumnType("text");
 
-                entity.Property(e => e.Salary)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.Requirements).HasColumnType("text");
 
                 entity.Property(e => e.TelephoneNumber)
                     .HasMaxLength(50)

@@ -8,7 +8,6 @@ import Select from 'react-select';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
 import {Button,ButtonToolbar} from 'react-bootstrap';
-import { ShowVacancyModal } from './ShowVacancyModal';
 import {StockVacancies, StockSalary, StockWorkExperience, StockWorkShedule} from "../StockData";
 
 import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
@@ -122,7 +121,6 @@ export class Vacancy extends Component{
 
     render(){
         const {deps}=this.state;
-        let showModalClose=()=>this.setState({showModalShow:false});
         return(
             <div >
                 <Table className="mt-4" striped bordered hover size="sm" style={{ textAlign: "center" }}>
@@ -219,27 +217,11 @@ export class Vacancy extends Component{
                                 <td>{dep.salary}</td>
                                 <td>{dep.description}</td>
                                 <td>
-                                    {/*<Button className="mr-2" variant="info"*/}
-                                    {/*    onClick={()=>this.setState({showModalShow:true})}>*/}
-                                    {/*            Проссмотр*/}
-                                    {/*</Button>*/}
                                     <Route render={({ history}) => (
-                                        <button type='button' onClick={() => { history.push( '/vacancyModal/?id=' + dep.id) }}>
+                                        <Button className="mr-2" variant="info" onClick={() => { history.push( '/vacancyModal/?id=' + dep.id) }}>
                                             Проссмотр
-                                        </button>
+                                        </Button>
                                     )} />
-                                        {/*<ShowVacancyModal show={this.state.showModalShow}*/}
-                                        {/*    onHide={showModalClose}*/}
-                                        {/*    depid={depid}*/}
-                                        {/*    depname={depname}*/}
-                                        {/*    depsalary={depsalary}*/}
-                                        {/*    depdescription={depdescription}*/}
-                                        {/*    depcity={depcity} */}
-                                        {/*    depTelephoneNumber={depTelephoneNumber} */}
-                                        {/*    depJobTitle={depJobTitle} */}
-                                        {/*    depRequirements={depRequirements} */}
-                                        {/*    depDuties={depDuties} */}
-                                        {/*    depConditions={depConditions}/>*/}
                                 </td>
                             </tr>)}
                     </tbody>

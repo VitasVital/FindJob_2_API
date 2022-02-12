@@ -6,65 +6,88 @@ import {LoginModal} from './LoginModal';
 import {RegistrationModal} from './RegistrationModal';
 import { EditAuthenticationModal } from './EditAuthenticationModal';
 
-function ClientInformation(props) {
-    return (
-        <div>
-            <h3>Информация об авторизованном пользователе</h3>
-                <Table className="mt-4" striped bordered hover size="sm">
-                    <tbody>
-                            <tr >
-                                <th scope="row">Имя</th>
-                                <td>{props.deps.name}</td>
-                            </tr>
-                            <tr >
-                                <th scope="row">Email</th>
-                                <td>{props.deps.email}</td>
-                            </tr>
-                            <tr >
-                                <th scope="row">Гражданство</th>
-                                <td>{props.deps.citizenship}</td>
-                            </tr>
-                            <tr >
-                                <th scope="row">Город</th>
-                                <td>{props.deps.city}</td>
-                            </tr>
-                            <tr >
-                                <th scope="row">Дата рождения</th>
-                                <td>{props.deps.dateBirth}</td>
-                            </tr>
-                            <tr >
-                                <th scope="row">Номер телефона</th>
-                                <td>{props.deps.telephoneNumber}</td>
-                            </tr>
-                            <tr >
-                                <th scope="row">Роль на сайте</th>
-                                <td>{props.deps.role}</td>
-                            </tr>
-                    </tbody>
-                </Table>
-        </div>
-    )
-}
-
-function Greeting(props) {
-    const deps = props.deps;
-    const clientInformation = props.clientInformation;
-    if (clientInformation) {
-      return <ClientInformation deps={deps} />;
-    }
-    return <h3>Тут будет Информация об авторизованном пользователе</h3>;
-  }
-
 export class Authentication extends Component{
 
     constructor(props){
         super(props);
-        this.state={deps:[], loginModalShow:false, registrationModalShow:false, editModalShow:false}
+        this.state={
+            deps:[],
+            loginModalShow:false,
+            registrationModalShow:false,
+            editModalShow:false
+        }
         
     }
 
-    refreshList(email, pass){
-        fetch(process.env.REACT_APP_API+'login/'+email+'/'+pass)
+    ClientInformation() {
+        return (
+            <div>
+                <p>
+                    <Button className="mr-2" variant="danger" style={{visibility: this.visibility(this.checkClientInformation()) }}
+                            onClick={()=>this.exitAccount()}>Выйти из аккаунта</Button>
+                </p>
+
+                <p>
+                    <Button className="mr-2" variant="info" style={{visibility: this.visibility(this.checkClientInformation()) }}
+                            onClick={()=>this.setState({editModalShow:true})}>Редактировать профиль</Button>
+                </p>
+                <h3>Информация об авторизованном пользователе</h3>
+                <Table className="mt-4" striped bordered hover size="sm">
+                    <tbody>
+                    <tr >
+                        <th scope="row">Имя</th>
+                        <td>{this.state.deps.name}</td>
+                    </tr>
+                    <tr >
+                        <th scope="row">Email</th>
+                        <td>{this.state.deps.email}</td>
+                    </tr>
+                    <tr >
+                        <th scope="row">Гражданство</th>
+                        <td>{this.state.deps.citizenship}</td>
+                    </tr>
+                    <tr >
+                        <th scope="row">Город</th>
+                        <td>{this.state.deps.city}</td>
+                    </tr>
+                    <tr >
+                        <th scope="row">Дата рождения</th>
+                        <td>{this.state.deps.dateBirth}</td>
+                    </tr>
+                    <tr >
+                        <th scope="row">Номер телефона</th>
+                        <td>{this.state.deps.telephoneNumber}</td>
+                    </tr>
+                    <tr >
+                        <th scope="row">Роль на сайте</th>
+                        <td>{this.state.deps.role}</td>
+                    </tr>
+                    </tbody>
+                </Table>
+            </div>
+        )
+    }
+
+    Greeting() {
+        if (this.checkClientInformation()) {
+            return this.ClientInformation();
+        }
+        return (
+            <div>
+                <p>
+                    <Button variant='primary' style={{visibility: this.visibility(!this.checkClientInformation()) }}
+                            onClick={()=>this.setState({loginModalShow:true})}>Войти</Button>
+                </p>
+                <p>
+                    <Button variant='primary' style={{visibility: this.visibility(!this.checkClientInformation()) }}
+                            onClick={()=>this.setState({registrationModalShow:true})}>Зарегистрироваться</Button>
+                </p>
+                <h3>Тут будет Информация об авторизованном пользователе</h3>
+            </div>);
+    }
+
+    refreshList(id){
+        fetch(process.env.REACT_APP_API+'login/GetUser/'+id)
         .then(response=>response.json())
         .then(data=>{
             this.setState({deps:data});
@@ -73,17 +96,13 @@ export class Authentication extends Component{
     }
 
     checkCookie() {
-        let matches_email = document.cookie.match(new RegExp(
+        let matches_id = document.cookie.match(new RegExp(
             "(?:^|; )" + 'email'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
           ));
-          let matches_pass = document.cookie.match(new RegExp(
-            "(?:^|; )" + 'password'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-          ));
-        if (matches_email && matches_pass) 
+        if (matches_id)
         {
-            let email = decodeURIComponent(matches_email[1]);
-            let pass = decodeURIComponent(matches_pass[1]);
-            this.refreshList(email, pass);
+            let id = decodeURIComponent(matches_id[1]);
+            this.refreshList(id);
         }
     }
 
@@ -95,22 +114,20 @@ export class Authentication extends Component{
         this.checkCookie();
     }
 
-    exitAccount(id, email, pass){
+    exitAccount(){
+        let matches_id = document.cookie.match(new RegExp(
+            "(?:^|; )" + 'id'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
         if(window.confirm('Вы действительно хотите выйти из аккаунта?')){
-            document.cookie = "id=" + {id} + ";" + "max-age=0";
-            document.cookie = "email=" + {email} + ";" + "max-age=0";
-            document.cookie = "password=" + {pass} + ";" + "max-age=0";
+            document.cookie = "id=" + {matches_id} + ";" + "max-age=0";
         }
     }
 
     checkClientInformation() {
-        let matches_email = document.cookie.match(new RegExp(
-            "(?:^|; )" + 'email'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        let matches_id = document.cookie.match(new RegExp(
+            "(?:^|; )" + 'id'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
           ));
-        let matches_pass = document.cookie.match(new RegExp(
-        "(?:^|; )" + 'password'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-        ));
-        return matches_email && matches_pass;
+        return matches_id;
     }
 
     visibility(showInformation) {
@@ -123,41 +140,20 @@ export class Authentication extends Component{
         let registrationModalClose=()=>this.setState({registrationModalShow:false});
         let editModalClose=()=>this.setState({editModalShow:false});
         let showInformation = this.checkClientInformation();
-        let autentificatedVisibility = this.visibility(showInformation);
-        let notAutentificatedVisibility = this.visibility(!showInformation);
         return(
             <div >
-                <ButtonToolbar>
-                <Button variant='primary' style={{visibility: notAutentificatedVisibility }}
-                    onClick={()=>this.setState({loginModalShow:true})}>
-                    Войти</Button>
+                <EditAuthenticationModal show={this.state.editModalShow}
+                    onHide={editModalClose}
+                    style={{visibility: this.visibility(showInformation) }}
+                    deps={deps}/>
 
-                    <Button variant='primary' style={{visibility: notAutentificatedVisibility }}
-                    onClick={()=>this.setState({registrationModalShow:true})}>
-                    Зарегистрироваться</Button>
+                <LoginModal show={this.state.loginModalShow}
+                onHide={loginModalClose}/>
 
-                    <Button className="mr-2" variant="danger" style={{visibility: autentificatedVisibility }}
-                                        onClick={()=>this.exitAccount(deps.id, deps.email, deps.password)}>
-                                        Выйти из аккаунта</Button>
+                <RegistrationModal show={this.state.registrationModalShow}
+                onHide={registrationModalClose}/>
 
-                    <Button className="mr-2" variant="info" style={{visibility: autentificatedVisibility }}
-                                        onClick={()=>this.setState({editModalShow:true,
-                                            deps:deps})}>
-                                                Редактировать профиль</Button>
-
-                    <EditAuthenticationModal show={this.state.editModalShow}
-                        onHide={editModalClose}
-                        style={{visibility: autentificatedVisibility }}
-                        deps={deps}/>
-                    
-                    <LoginModal show={this.state.loginModalShow}
-                    onHide={loginModalClose}/>
-
-                    <RegistrationModal show={this.state.registrationModalShow}
-                    onHide={registrationModalClose}/>
-                    
-                </ButtonToolbar>
-                <Greeting deps={deps} clientInformation={showInformation}/>
+                { this.Greeting() }
             </div>
         )
     }

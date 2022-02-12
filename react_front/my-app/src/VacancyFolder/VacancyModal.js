@@ -3,7 +3,6 @@ import {Modal,Button, Row, Col, Form} from 'react-bootstrap';
 
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import queryString from 'query-string';
-import {StockVacancies} from "../StockData";
 
 export class VacancyModal extends Component{
     constructor(props){
@@ -74,8 +73,8 @@ export class VacancyModal extends Component{
             return (
                 <div>
                     <h2>{this.state.vacancyModal.name}</h2>
-                    <h4>{this.state.vacancyModal.minSalary}</h4>
-                    <h4>{this.state.vacancyModal.maxSalary}</h4>
+                    <h4>Зарплата</h4>
+                    <h5>от {this.state.vacancyModal.minSalary} до {this.state.vacancyModal.maxSalary}</h5>
                     <h4>Должность</h4>
                     <h5>{this.state.vacancyModal.jobTitle}</h5>
                     <h5>Описание</h5>
@@ -90,6 +89,9 @@ export class VacancyModal extends Component{
                     <p>{this.state.vacancyModal.duties}</p>
                     <h5>Условия</h5>
                     <p>{this.state.vacancyModal.conditions}</p>
+                    <Button className="mr-2" variant="info" onClick={() => this.handleSubmit()}>
+                        Откликнуться
+                    </Button>
                 </div>
             )
         }

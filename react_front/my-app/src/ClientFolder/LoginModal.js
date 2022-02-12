@@ -1,14 +1,22 @@
 import React,{Component} from 'react';
 import {Modal,Button, Row, Col, Form} from 'react-bootstrap';
+import {StockVacancies} from "../StockData";
 
 export class LoginModal extends Component{
     constructor(props){
         super(props);
+        this.state={
+            login: '',
+            password: ''
+        }
+
         this.handleSubmit=this.handleSubmit.bind(this);
+        this.handleInputChange1 = this.handleInputChange1.bind(this);
+        this.handleInputChange2 = this.handleInputChange2.bind(this);
     }
 
     handleSubmit(event){
-        event.preventDefault();
+        // event.preventDefault();
         fetch(process.env.REACT_APP_API+'login',{
             method:'POST',
             headers:{
@@ -16,27 +24,35 @@ export class LoginModal extends Component{
                 'Content-Type':'application/json'
             },
             body:JSON.stringify({
-                Email: event.target.email.value,
-                Password: event.target.password.value
+                Email: this.state.login,
+                Password: this.state.password
             })
         })
         .then(res=>res.json())
         .then((result)=>{
-            if (result === 'Успешная авторизация')
+            if (result !== 'Неудачная авторизация')
             {
-                document.cookie = "email" + "=" + encodeURIComponent(event.target.email.value);
-                document.cookie = "password" + "=" + encodeURIComponent(event.target.password.value);
-                alert(result);
+                document.cookie = "id" + "=" + encodeURIComponent(result);
+                alert('Успешная авторизация' + result);
             }
             else
             {
-                alert(result);
+                alert('Неудачная авторизация');
             }
         },
         (error)=>{
             alert('Failed');
         })
     }
+
+    handleInputChange1(event) {
+        this.setState({login: event.target.login});
+    }
+
+    handleInputChange2(event) {
+        this.setState({password: event.target.password});
+    }
+
     render(){
         return (
             <div className="container">
@@ -53,27 +69,27 @@ export class LoginModal extends Component{
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-
                         <Row>
                             <Col sm={6}>
-                                <Form onSubmit={this.handleSubmit}>
-                                    <Form.Group controlId="name">
-                                        <Form.Label>Логин</Form.Label>
-                                        <Form.Control type="text" name="email" required 
-                                        placeholder="Логин"/>
-                                    </Form.Group>
-                                    <Form.Group controlId="name">
-                                        <Form.Label>Пароль</Form.Label>
-                                        <Form.Control type="password" name="password" required 
-                                        placeholder="Пароль"/>
-                                    </Form.Group>
+                                <p>
+                                    gsdhsdgh@dfsfs
+                                    fsdvxc
+                                </p>
+                                <Form.Group controlId="name">
+                                    <Form.Label>Логин</Form.Label>
+                                    <Form.Control type="text" placeholder = "Логин" value={this.state.login} onChange={ this.handleInputChange1 }/>
+                                </Form.Group>
+                                <Form.Group controlId="name">
+                                    <Form.Label>Пароль</Form.Label>
+                                    <Form.Control type="password" placeholder = "Пароль" value={this.state.password} onChange={ this.handleInputChange2 }/>
+                                </Form.Group>
 
-                                    <Form.Group>
-                                        <Button variant="primary" type="submit">
-                                            Войти
-                                        </Button>
-                                    </Form.Group>
-                                </Form>
+                                <Form.Group>
+                                    <Button className="mr-2" variant="primary"
+                                            onClick={()=>this.handleSubmit()}>
+                                        Войти
+                                    </Button>
+                                </Form.Group>
                             </Col>
                         </Row>
                     </Modal.Body>

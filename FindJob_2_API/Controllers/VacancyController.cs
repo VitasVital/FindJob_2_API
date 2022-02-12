@@ -23,6 +23,14 @@ namespace FindJob_2_API.Controllers
         {
             return new JsonResult(_db.Vacancies.ToList());
         }
+        [Route("[action]/{id}")]
+        [HttpGet]
+        public JsonResult GetVacancy(int id)
+        {
+            Vacancy vacancy = _db.Vacancies.FirstOrDefault(c => c.Id == id);
+
+            return new JsonResult(vacancy);
+        }
         [HttpPost]
         public JsonResult Post(ResponseFromClientToVacancy resp)
         {

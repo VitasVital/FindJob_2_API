@@ -18,16 +18,18 @@ namespace FindJob_2_API.Models
         public string Name { get; set; }
         public int? CompanyId { get; set; }
         public string Description { get; set; }
-        public string City { get; set; }
         public string TelephoneNumber { get; set; }
         public string JobTitle { get; set; }
         public int? WorkScheduleId { get; set; }
         public string Requirements { get; set; }
         public string Duties { get; set; }
         public string Conditions { get; set; }
-        public string Salary { get; set; }
         public string Photo { get; set; }
         public int? WorkExperienceId { get; set; }
+        public double? MinSalary { get; set; }
+        public double? MaxSalary { get; set; }
+        public string Country { get; set; }
+        public string Region { get; set; }
 
         public virtual Company Company { get; set; }
         public virtual WorkExperience WorkExperience { get; set; }
