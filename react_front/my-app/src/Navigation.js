@@ -17,7 +17,7 @@ export class Navigation extends Component {
                             Вакансии
                         </NavLink>
                         <NavLink className="d-inline p-2 bg-dark text-white" to="/authentication">
-                            Авторизация
+                            Личный кабинет
                         </NavLink>
                     </Nav>
                 </Navbar.Collapse>

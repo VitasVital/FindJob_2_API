@@ -41,15 +41,22 @@ export class Vacancy extends Component{
 
     refreshList(){
         let inputSearch_help = this.state.inputSearch;
-        if (inputSearch_help === '')
-        {
-            inputSearch_help = 'пусто';
-        }
+        let country_help = this.state.country;
+        let region_help = this.state.region;
+        // if (inputSearch_help === '')
+        // {
+        //     inputSearch_help = 'пусто';
+        // }
+        inputSearch_help = inputSearch_help === '' ? 'пусто' : inputSearch_help;
+        country_help = country_help === '' ? 'пусто' : country_help;
+        region_help = region_help === '' ? 'пусто' : region_help;
         fetch(process.env.REACT_APP_API+'Vacancy/GetVacanciesWithParams/'
             + this.state.optionSelected_shedule.value
             + '/' + this.state.optionSelected_experience.value
             + '/' + this.state.optionSelected_salary.value
-            + '/' + inputSearch_help)
+            + '/' + inputSearch_help
+            + '/' + country_help
+            + '/' + region_help)
         .then(response=>response.json())
         .then(data=>{
             this.setState({deps:data});
@@ -191,6 +198,7 @@ export class Vacancy extends Component{
                         <tr>
                             <th>Специальность</th>
                             <th>Компания</th>
+                            <th>Регион</th>
                             <th>Зарплата</th>
                             <th>Описание профессии</th>
                             <th>Опыт работы</th>
@@ -202,6 +210,7 @@ export class Vacancy extends Component{
                             <tr key={dep.id}>
                                 <td>{dep.name}</td>
                                 <td>{dep.companyName}</td>
+                                <td>{dep.region}</td>
                                 <td>{dep.minSalary} руб. до {dep.maxSalary} руб.</td>
                                 <td>{dep.description}</td>
                                 <td>{dep.workExperience}</td>

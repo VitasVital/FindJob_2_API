@@ -47,11 +47,7 @@ namespace FindJob_2_API.Models
             {
                 entity.ToTable("Client");
 
-                entity.Property(e => e.Citizenship)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.City)
+                entity.Property(e => e.Country)
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
@@ -72,6 +68,10 @@ namespace FindJob_2_API.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.Password)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Region)
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
@@ -218,7 +218,9 @@ namespace FindJob_2_API.Models
 
                 entity.Property(e => e.Conditions).HasColumnType("text");
 
-                entity.Property(e => e.Country).HasColumnType("text");
+                entity.Property(e => e.Country)
+                    .HasMaxLength(36)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Description).HasColumnType("text");
 
@@ -241,7 +243,9 @@ namespace FindJob_2_API.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Region).HasColumnType("text");
+                entity.Property(e => e.Region)
+                    .HasMaxLength(36)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Requirements).HasColumnType("text");
 

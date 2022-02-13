@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace FindJob_2_API.Controllers
 {
@@ -18,11 +19,59 @@ namespace FindJob_2_API.Controllers
             _db = context;
         }
 
+        [Route("[action]/{workScheduleId}/{workExperienceId}/{minSalary}/{inputSearch}/{country}/{region}")]
         [HttpGet]
-        public JsonResult Get()
+        public JsonResult GetVacanciesWithParams(int workScheduleId, 
+            int workExperienceId, 
+            int minSalary, 
+            string inputSearch, 
+            string country, 
+            string region)
         {
-            return new JsonResult(_db.Vacancies.ToList());
+            var vacancies = from vacancy in _db.
+                    Vacancies
+                    .Where(c => c.WorkScheduleId == workScheduleId
+                               && (c.WorkExperienceId == workExperienceId || workExperienceId == 1)
+                               && (c.MinSalary > minSalary || c.MaxSalary > minSalary)
+                               )
+                join company in _db.Companies
+                    on vacancy.Id equals company.Id //into gj
+                join workExperience in _db.WorkExperiences
+                    on vacancy.Id equals workExperience.Id //into gj
+                where (
+                          (EF.Functions.Like(vacancy.Name.ToLower(), $"%{inputSearch.ToLower()}%")
+                       || EF.Functions.Like(inputSearch.ToLower(), "%" + vacancy.Name.ToLower() + "%")
+                       || inputSearch.ToLower() == "пусто")
+                    || 
+                        (EF.Functions.Like(company.Name.ToLower(), $"%{inputSearch.ToLower()}%")
+                        || EF.Functions.Like(inputSearch.ToLower(), "%" + company.Name.ToLower() + "%")
+                        || inputSearch.ToLower() == "пусто")
+                    )
+                    &&
+                        (EF.Functions.Like(vacancy.Country.ToLower(), $"%{country.ToLower()}%")
+                         || EF.Functions.Like(country.ToLower(), "%" + vacancy.Country.ToLower() + "%")
+                         || country.ToLower() == "пусто")
+                    &&
+                        (EF.Functions.Like(vacancy.Region.ToLower(), $"%{region.ToLower()}%")
+                         || EF.Functions.Like(region.ToLower(), "%" + vacancy.Region.ToLower() + "%")
+                         || region.ToLower() == "пусто")
+                // from subpet in gj.DefaultIfEmpty()
+                select new
+                {
+                    vacancy.Id, 
+                    vacancy.Name, 
+                    vacancy.MinSalary, 
+                    vacancy.MaxSalary, 
+                    vacancy.Description, 
+                    vacancy.Region, 
+                    CompanyName = company.Name,
+                    WorkExperience = workExperience.Name
+                    // CompanyName = subpet.Name
+                };
+            
+            return new JsonResult(vacancies);
         }
+        
         [Route("[action]/{id}")]
         [HttpGet]
         public JsonResult GetVacancy(int id)
@@ -31,6 +80,7 @@ namespace FindJob_2_API.Controllers
 
             return new JsonResult(vacancy);
         }
+        
         [HttpPost]
         public JsonResult Post(ResponseFromClientToVacancy resp)
         {
@@ -45,10 +95,7 @@ namespace FindJob_2_API.Controllers
 
                 return new JsonResult("Ответ отправлен");
             }
-            else
-            {
-                return new JsonResult("Вы уже откликнулись на вакансию раннее");
-            }
+            return new JsonResult("Вы уже откликнулись на вакансию раннее");
         }
     }
 }

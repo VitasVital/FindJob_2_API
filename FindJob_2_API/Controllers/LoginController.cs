@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,7 +27,22 @@ namespace FindJob_2_API.Controllers
         [HttpGet]
         public JsonResult GetUser(int id)
         {
-            Client client = _db.Clients.FirstOrDefault(c => c.Id == id);
+            var client = _db
+                .Clients
+                .Select(p => new
+                    {
+                        p.Id,
+                        p.Name,
+                        p.Email,
+                        p.Country,
+                        p.Region,
+                        DateBirth = p.DateBirth.ToString(),
+                        p.TelephoneNumber,
+                        p.Role
+                    }
+                )
+                .FirstOrDefault(c => c.Id == id)
+                ;
 
             return new JsonResult(client);
         }
@@ -40,10 +56,7 @@ namespace FindJob_2_API.Controllers
             {
                 return new JsonResult("Нет данного пользователя");
             }
-            else
-            {
-                return new JsonResult(_client.Id);
-            }
+            return new JsonResult(_client.Id);
         }
 
         [HttpDelete("{email}/{password}")]
@@ -51,19 +64,14 @@ namespace FindJob_2_API.Controllers
         {
             Client client = _db.Clients.FirstOrDefault(c => c.Email == email && c.Password == password && c.IsDeleted != true);
 
-
             if (client is null)
             {
                 return new JsonResult("Нет пользователя");
             }
-            else
-            {
-                _db.Clients.FirstOrDefault(c => c.Email == email && c.Password == password).IsDeleted = true;
-                _db.SaveChanges();
+            _db.Clients.FirstOrDefault(c => c.Email == email && c.Password == password).IsDeleted = true;
+            _db.SaveChanges();
 
-                return new JsonResult("Успушно удалён");
-            }
-            
+            return new JsonResult("Успушно удалён");
         }
 
         [HttpPut]
@@ -75,22 +83,19 @@ namespace FindJob_2_API.Controllers
 
                 return new JsonResult("Нет пользователя");
             }
-            else
-            {
-                _client.Name = client.Name;
-                _client.Email = client.Email;
-                _client.Password = client.Password;
-                _client.City = client.City;
-                _client.DateBirth = client.DateBirth;
-                _client.Gender = client.Gender;
-                _client.Citizenship = client.Citizenship;
-                _client.TelephoneNumber = client.TelephoneNumber;
-                _client.Role = client.Role;
+            _client.Name = client.Name;
+            _client.Email = client.Email;
+            _client.Password = client.Password;
+            _client.Region = client.Region;
+            _client.DateBirth = client.DateBirth;
+            _client.Gender = client.Gender;
+            _client.Country = client.Country;
+            _client.TelephoneNumber = client.TelephoneNumber;
+            _client.Role = client.Role;
 
-                _db.SaveChanges();
+            _db.SaveChanges();
 
-                return new JsonResult("Данные успешно изменены");
-            }
+            return new JsonResult("Данные успешно изменены");
         }
     }
 }

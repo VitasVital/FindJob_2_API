@@ -11,7 +11,8 @@ export class Authentication extends Component{
     constructor(props){
         super(props);
         this.state={
-            deps:[],
+            deps: [],
+            dateBirthHelp: '',
             loginModalShow:false,
             registrationModalShow:false,
             editModalShow:false
@@ -43,12 +44,12 @@ export class Authentication extends Component{
                         <td>{this.state.deps.email}</td>
                     </tr>
                     <tr >
-                        <th scope="row">Гражданство</th>
-                        <td>{this.state.deps.citizenship}</td>
+                        <th scope="row">Страна</th>
+                        <td>{this.state.deps.country}</td>
                     </tr>
                     <tr >
-                        <th scope="row">Город</th>
-                        <td>{this.state.deps.city}</td>
+                        <th scope="row">Регион</th>
+                        <td>{this.state.deps.region}</td>
                     </tr>
                     <tr >
                         <th scope="row">Дата рождения</th>
@@ -82,7 +83,7 @@ export class Authentication extends Component{
                     <Button variant='primary' style={{visibility: this.visibility(!this.checkClientInformation()) }}
                             onClick={()=>this.setState({registrationModalShow:true})}>Зарегистрироваться</Button>
                 </p>
-                <h3>Тут будет Информация об авторизованном пользователе</h3>
+                <h3>Зарегистрируйтесь или авторизуйтесь</h3>
             </div>);
     }
 
@@ -92,13 +93,13 @@ export class Authentication extends Component{
         .then(data=>{
             this.setState({deps:data});
         });
-        document.cookie = "id" + "=" + encodeURIComponent(this.state.deps.id);
     }
 
     checkCookie() {
         let matches_id = document.cookie.match(new RegExp(
-            "(?:^|; )" + 'email'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+            "(?:^|; )" + 'id'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
           ));
+
         if (matches_id)
         {
             let id = decodeURIComponent(matches_id[1]);
@@ -111,7 +112,6 @@ export class Authentication extends Component{
     }
 
     componentDidUpdate(){
-        this.checkCookie();
     }
 
     exitAccount(){
@@ -121,6 +121,7 @@ export class Authentication extends Component{
         if(window.confirm('Вы действительно хотите выйти из аккаунта?')){
             document.cookie = "id=" + {matches_id} + ";" + "max-age=0";
         }
+        window.location.reload();
     }
 
     checkClientInformation() {

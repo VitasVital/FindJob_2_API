@@ -33,7 +33,7 @@ export class LoginModal extends Component{
             if (result !== 'Неудачная авторизация')
             {
                 document.cookie = "id" + "=" + encodeURIComponent(result);
-                alert('Успешная авторизация' + result);
+                alert('Успешная авторизация');
             }
             else
             {
@@ -45,13 +45,9 @@ export class LoginModal extends Component{
         })
     }
 
-    handleInputChange1(event) {
-        this.setState({login: event.target.login});
-    }
+    handleInputChange1 = e => this.setState({ login: e.target.value });
 
-    handleInputChange2(event) {
-        this.setState({password: event.target.password});
-    }
+    handleInputChange2 = e => this.setState({ password: e.target.value });
 
     render(){
         return (

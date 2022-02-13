@@ -46,24 +46,24 @@ export class VacancyModal extends Component{
             "(?:^|; )" + 'id'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
         ));
         // event.preventDefault();
-        // fetch(process.env.REACT_APP_API+'vacancy',{
-        //     method:'POST',
-        //     headers:{
-        //         'Accept':'application/json',
-        //         'Content-Type':'application/json'
-        //     },
-        //     body:JSON.stringify({
-        //         VacancyId: this.props.depid,
-        //         ClientId: parseInt(decodeURIComponent(matches_id[1]))
-        //     })
-        // })
-        //     .then(res=>res.json())
-        //     .then((result)=>{
-        //             alert(result);
-        //         },
-        //         (error)=>{
-        //             alert('Failed');
-        //         })
+        fetch(process.env.REACT_APP_API+'vacancy',{
+            method:'POST',
+            headers:{
+                'Accept':'application/json',
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                VacancyId: this.state.vacancyModal.id,
+                ClientId: parseInt(decodeURIComponent(matches_id[1]))
+            })
+        })
+            .then(res=>res.json())
+            .then((result)=>{
+                    alert(result);
+                },
+                (error)=>{
+                    alert('Failed');
+                })
     }
 
     RenderData() {

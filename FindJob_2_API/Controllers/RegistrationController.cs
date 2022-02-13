@@ -29,10 +29,7 @@ namespace FindJob_2_API.Controllers
                 _db.SaveChanges();
                 return new JsonResult("Успешная регистрация");
             }
-            else
-            {
-                return new JsonResult("Данный пользователь уже зарегистрирован");
-            }
+            return new JsonResult("Данный пользователь уже зарегистрирован");
         }
     }
 }

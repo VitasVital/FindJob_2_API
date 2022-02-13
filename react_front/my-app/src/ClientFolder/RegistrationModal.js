@@ -40,7 +40,18 @@ export class RegistrationModal extends Component{
 
     handleSubmit(event){
         // event.preventDefault();
-        alert(this.state.password1 + ' ' + this.state.password2)
+        if (this.state._name === '',
+            this.state.email === '',
+            this.state.password1 === '',
+            this.state.password2 === '',
+            this.state.dateBirth === '',
+            this.state.gender.value === '',
+            this.state.telephoneNumber === '',
+            this.state.role.value === '')
+        {
+            alert('Не все поля заполнены');
+            return;
+        }
         if (this.state.password1 !== this.state.password2)
         {
             alert('Пароли не совпадают');
@@ -58,11 +69,11 @@ export class RegistrationModal extends Component{
                 Password: this.state.password1,
                 City: this.state.city,
                 DateBirth: this.state.dateBirth,
-                Gender: this.state.optionSelected_gender,
+                Gender: this.state.optionSelected_gender.label,
                 Country: this.state.country,
                 Region: this.state.region,
                 TelephoneNumber: this.state.telephoneNumber,
-                Role: this.state.optionSelected_role,
+                Role: this.state.optionSelected_role.label,
                 IsDeleted: false
             })
         })
@@ -83,27 +94,19 @@ export class RegistrationModal extends Component{
     this.setState({ region: val });
     }
 
-    handleInputChange1(event) {
-        this.setState({_name: event.target._name});
-    }
-    handleInputChange2(event) {
-        this.setState({email: event.target.email});
-    }
-    handleInputChange3(event) {
-        this.setState({password1: event.target.password1});
-    }
-    handleInputChange3_1(event) {
-        this.setState({password2: event.target.password2});
-    }
-    handleInputChange4(event) {
-        this.setState({dateBirth: event.target.dateBirth});
-    }
-    handleInputChange5(event) {
-        this.setState({telephoneNumber: event.target.telephoneNumber});
-    }
-    handleInputChange6(event) {
-        this.setState({role: event.target.role});
-    }
+    handleInputChange1 = e => this.setState({ _name: e.target.value });
+
+    handleInputChange2 = e => this.setState({ email: e.target.value });
+
+    handleInputChange3 = e => this.setState({ password1: e.target.value });
+
+    handleInputChange3_1 = e => this.setState({ password2: e.target.value });
+
+    handleInputChange4 = e => this.setState({ dateBirth: e.target.value });
+
+    handleInputChange5 = e => this.setState({ telephoneNumber: e.target.value });
+
+    handleInputChange6 = e => this.setState({ role: e.target.value });
 
     handleInputChange7 = (optionSelected_gender) => {
         this.setState({ optionSelected_gender }, () =>
@@ -174,7 +177,7 @@ export class RegistrationModal extends Component{
                                 </Form.Group>
 
                                 <Form.Group controlId="name">
-                                    <Form.Label>Пароль</Form.Label>
+                                    <Form.Label>Дата рождения</Form.Label>
                                     <Form.Control type="date" placeholder = "Дата рождения" value={this.state.dateBirth} onChange={ this.handleInputChange4 }/>
                                 </Form.Group>
 
