@@ -1,26 +1,26 @@
 export const StockSalary = [
   {
-    value: 1,
+    value: 0,
     label: 'Не имеет значения'
   },
   {
-    value: 2,
+    value: 40000,
     label: 'от 40000 руб.'
   },
   {
-    value: 3,
+    value: 80000,
     label: 'от 80000 руб.'
   },
   {
-    value: 4,
+    value: 120000,
     label: 'от 120000 руб.'
   },
   {
-    value: 5,
+    value: 160000,
     label: 'от 160000 руб.'
   },
   {
-    value: 6,
+    value: 200000,
     label: 'от 200000 руб.'
   }
 ];

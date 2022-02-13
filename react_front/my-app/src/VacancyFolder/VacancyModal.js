@@ -1,15 +1,17 @@
 import React,{Component} from 'react';
 import {Modal,Button, Row, Col, Form} from 'react-bootstrap';
 
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
 import queryString from 'query-string';
+import {StockWorkShedule} from "../StockData";
 
 export class VacancyModal extends Component{
     constructor(props){
         super(props);
         this.handleSubmit=this.handleSubmit.bind(this);
         this.state={
-            vacancyModal: null
+            vacancyModal: null,
+            isRedirect: false
         }
     }
 
@@ -25,13 +27,7 @@ export class VacancyModal extends Component{
         let matches_id = document.cookie.match(new RegExp(
             "(?:^|; )" + 'id'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
         ));
-        let matches_email = document.cookie.match(new RegExp(
-            "(?:^|; )" + 'email'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-        ));
-        let matches_pass = document.cookie.match(new RegExp(
-            "(?:^|; )" + 'password'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-        ));
-        if (matches_email && matches_pass && matches_id)
+        if (matches_id)
         {
             return true;
         }
@@ -41,31 +37,33 @@ export class VacancyModal extends Component{
     handleSubmit(event){
         if (this.checkCookie() === false)
         {
-            alert('Вы не зарегистрированный пользователь');
+            const conf = window.confirm(`Вы не зарегистрированный пользователь.\n Желаете зарегистрироваться?`);
+
+            this.setState({ isRedirect: conf });
             return
         }
         let matches_id = document.cookie.match(new RegExp(
             "(?:^|; )" + 'id'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
         ));
-        event.preventDefault();
-        fetch(process.env.REACT_APP_API+'vacancy',{
-            method:'POST',
-            headers:{
-                'Accept':'application/json',
-                'Content-Type':'application/json'
-            },
-            body:JSON.stringify({
-                VacancyId: this.props.depid,
-                ClientId: parseInt(decodeURIComponent(matches_id[1]))
-            })
-        })
-            .then(res=>res.json())
-            .then((result)=>{
-                    alert(result);
-                },
-                (error)=>{
-                    alert('Failed');
-                })
+        // event.preventDefault();
+        // fetch(process.env.REACT_APP_API+'vacancy',{
+        //     method:'POST',
+        //     headers:{
+        //         'Accept':'application/json',
+        //         'Content-Type':'application/json'
+        //     },
+        //     body:JSON.stringify({
+        //         VacancyId: this.props.depid,
+        //         ClientId: parseInt(decodeURIComponent(matches_id[1]))
+        //     })
+        // })
+        //     .then(res=>res.json())
+        //     .then((result)=>{
+        //             alert(result);
+        //         },
+        //         (error)=>{
+        //             alert('Failed');
+        //         })
     }
 
     RenderData() {
@@ -99,7 +97,10 @@ export class VacancyModal extends Component{
     }
 
     render(){
-
+        let isRedirect = this.state.isRedirect;
+        if(isRedirect == true){
+            return <Redirect to='/authentication' />
+        }
         return (
             <div className="container">
                 {this.RenderData()}

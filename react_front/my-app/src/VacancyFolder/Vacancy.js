@@ -17,15 +17,15 @@ export class Vacancy extends Component{
     constructor(props){
         super(props);
         this.state={
-            // deps:[],
-            deps: StockVacancies,
-            showModalShow:false,
+            deps:[],
+            stockWorkExperience: StockWorkExperience,
+            // deps: StockVacancies,
 
             inputSearch: '',
 
-            optionSelected_salary: '',
-            optionSelected_experience: '',
-            optionSelected_shedule: '',
+            optionSelected_salary: StockSalary[0],
+            optionSelected_experience: StockWorkExperience[0],
+            optionSelected_shedule: StockWorkShedule[0],
 
             country: '',
             region: ''
@@ -40,7 +40,16 @@ export class Vacancy extends Component{
     }
 
     refreshList(){
-        fetch(process.env.REACT_APP_API+'vacancy')
+        let inputSearch_help = this.state.inputSearch;
+        if (inputSearch_help === '')
+        {
+            inputSearch_help = 'пусто';
+        }
+        fetch(process.env.REACT_APP_API+'Vacancy/GetVacanciesWithParams/'
+            + this.state.optionSelected_shedule.value
+            + '/' + this.state.optionSelected_experience.value
+            + '/' + this.state.optionSelected_salary.value
+            + '/' + inputSearch_help)
         .then(response=>response.json())
         .then(data=>{
             this.setState({deps:data});
@@ -48,36 +57,14 @@ export class Vacancy extends Component{
     }
 
     componentDidMount(){
-        // this.refreshList();
+        this.refreshList();
     }
 
     componentDidUpdate(){
-        // this.refreshList();
     }
 
     handleSubmit1(event){
-        fetch(process.env.REACT_APP_API + '/sneakersProject/SneakersServlet?m=searchByFilters',{
-            method:'POST',
-            headers:{
-                'Accept':'application/json',
-                'Content-Type':'application/json'
-            },
-            body:JSON.stringify({
-                inputSearch: this.state.inputSearch === '' ? [] : this.state.inputSearch,
-                optionSelected_salary: this.state.optionSelected_salary === '' ? [] : this.state.optionSelected_salary,
-                optionSelected_experience: this.state.optionSelected_experience === '' ? [] : this.state.optionSelected_experience,
-                optionSelected_shedule: this.state.optionSelected_shedule === '' ? [] : this.state.optionSelected_shedule,
-                country: this.state.country === '' ? [] : this.state.country,
-                region: this.state.region === '' ? [] : this.state.region
-            })
-        })
-        .then(res=>res.json())
-        .then((result)=>{
-                this.setState({deps:result});
-            },
-            (error)=>{
-                // alert('При открпвке на сервер 2');
-            })
+        this.refreshList();
     }
 
     handleInputChange1 = (optionSelected_salary) => {
@@ -92,9 +79,7 @@ export class Vacancy extends Component{
         );
     };
 
-    handleInputChange3(event) {
-        this.setState({inputSearch: event.target.inputSearch});
-    }
+    handleInputChange3 = e => this.setState({ inputSearch: e.target.value });
 
     handleInputChange4 = (optionSelected_shedule) => {
         this.setState({ optionSelected_shedule }, () =>
@@ -104,11 +89,11 @@ export class Vacancy extends Component{
 
     handleInputChange5(event) {
         this.setState({ inputSearch: '' });
-        this.setState({ optionSelected_salary: '' });
+        this.setState({ optionSelected_salary: StockSalary[0] });
         this.setState({ country: '' });
         this.setState({ region: '' });
-        this.setState({ optionSelected_experience: '' });
-        this.setState({ optionSelected_shedule: '' });
+        this.setState({ optionSelected_experience: StockWorkExperience[0] });
+        this.setState({ optionSelected_shedule: StockWorkShedule[0] });
     }
 
     selectCountry (val) {
@@ -181,7 +166,7 @@ export class Vacancy extends Component{
                         </td>
                     </tr>
                     <tr>
-                        <th>Отправить</th>
+                        <th>Найти</th>
                         <td>
                             <Button className="mr-2" variant="info"
                                     onClick={()=>this.handleSubmit1()}>
@@ -205,8 +190,10 @@ export class Vacancy extends Component{
                     <thead>
                         <tr>
                             <th>Специальность</th>
+                            <th>Компания</th>
                             <th>Зарплата</th>
                             <th>Описание профессии</th>
+                            <th>Опыт работы</th>
                             <th>Проссмотр</th>
                         </tr>
                     </thead>
@@ -214,8 +201,10 @@ export class Vacancy extends Component{
                         {deps.map(dep=>
                             <tr key={dep.id}>
                                 <td>{dep.name}</td>
-                                <td>{dep.salary}</td>
+                                <td>{dep.companyName}</td>
+                                <td>{dep.minSalary} руб. до {dep.maxSalary} руб.</td>
                                 <td>{dep.description}</td>
+                                <td>{dep.workExperience}</td>
                                 <td>
                                     <Route render={({ history}) => (
                                         <Button className="mr-2" variant="info" onClick={() => { history.push( '/vacancyModal/?id=' + dep.id) }}>
