@@ -97,6 +97,8 @@ namespace FindJob_2_API.Models
             {
                 entity.ToTable("Employment");
 
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -105,6 +107,8 @@ namespace FindJob_2_API.Models
             modelBuilder.Entity<KeySkill>(entity =>
             {
                 entity.ToTable("Key_skills");
+
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -116,6 +120,8 @@ namespace FindJob_2_API.Models
                 entity.ToTable("Response_from_client_to_vacancy");
 
                 entity.Property(e => e.IsAccepted).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.IsResponsed).HasDefaultValueSql("((0))");
 
@@ -135,6 +141,8 @@ namespace FindJob_2_API.Models
                 entity.ToTable("Response_from_vacancy_to_client");
 
                 entity.Property(e => e.IsAccepted).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.IsResponsed).HasDefaultValueSql("((0))");
 
@@ -226,6 +234,8 @@ namespace FindJob_2_API.Models
 
                 entity.Property(e => e.Duties).HasColumnType("text");
 
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.JobTitle)
                     .HasMaxLength(50)
                     .IsUnicode(false)
@@ -277,6 +287,8 @@ namespace FindJob_2_API.Models
             {
                 entity.ToTable("Vacancy_Key_skills");
 
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.KeySkillsId).HasColumnName("Key_skillsId");
 
                 entity.HasOne(d => d.KeySkills)
@@ -294,6 +306,8 @@ namespace FindJob_2_API.Models
             {
                 entity.ToTable("Work_experience");
 
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -302,6 +316,8 @@ namespace FindJob_2_API.Models
             modelBuilder.Entity<WorkSchedule>(entity =>
             {
                 entity.ToTable("Work_schedule");
+
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)

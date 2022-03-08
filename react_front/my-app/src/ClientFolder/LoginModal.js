@@ -6,8 +6,8 @@ export class LoginModal extends Component{
     constructor(props){
         super(props);
         this.state={
-            login: '',
-            password: ''
+            login: 'gsdhsdgh@dfsfs',
+            password: 'fsdvxc'
         }
 
         this.handleSubmit=this.handleSubmit.bind(this);

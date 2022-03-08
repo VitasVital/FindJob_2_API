@@ -10,6 +10,7 @@ namespace FindJob_2_API.Models
         public int Id { get; set; }
         public int? VacancyId { get; set; }
         public int? KeySkillsId { get; set; }
+        public bool? IsDeleted { get; set; }
 
         public virtual KeySkill KeySkills { get; set; }
         public virtual Vacancy Vacancy { get; set; }

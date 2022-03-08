@@ -5,6 +5,7 @@ import {Button,ButtonToolbar} from 'react-bootstrap';
 import {LoginModal} from './LoginModal';
 import {RegistrationModal} from './RegistrationModal';
 import { EditAuthenticationModal } from './EditAuthenticationModal';
+import {Route} from "react-router-dom";
 
 export class Authentication extends Component{
 
@@ -21,6 +22,11 @@ export class Authentication extends Component{
     }
 
     ClientInformation() {
+        let matches_id = document.cookie.match(new RegExp(
+            "(?:^|; )" + 'id'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        let id = decodeURIComponent(matches_id[1]);
+
         return (
             <div>
                 <p>
@@ -65,6 +71,12 @@ export class Authentication extends Component{
                     </tr>
                     </tbody>
                 </Table>
+
+                <Route render={({ history}) => (
+                    <Button className="mr-2" variant="info" onClick={() => { history.push( '/responseClient/?id=' + id) }}>
+                        Просмотр откликов
+                    </Button>
+                )} />
             </div>
         )
     }

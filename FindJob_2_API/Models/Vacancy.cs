@@ -30,6 +30,7 @@ namespace FindJob_2_API.Models
         public double? MaxSalary { get; set; }
         public string Country { get; set; }
         public string Region { get; set; }
+        public bool? IsDeleted { get; set; }
 
         public virtual Company Company { get; set; }
         public virtual WorkExperience WorkExperience { get; set; }

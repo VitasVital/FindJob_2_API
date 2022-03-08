@@ -202,7 +202,7 @@ export class Vacancy extends Component{
                             <th>Зарплата</th>
                             <th>Описание профессии</th>
                             <th>Опыт работы</th>
-                            <th>Проссмотр</th>
+                            <th>Просмотр</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -217,7 +217,7 @@ export class Vacancy extends Component{
                                 <td>
                                     <Route render={({ history}) => (
                                         <Button className="mr-2" variant="info" onClick={() => { history.push( '/vacancyModal/?id=' + dep.id) }}>
-                                            Проссмотр
+                                            Просмотр
                                         </Button>
                                     )} />
                                 </td>
