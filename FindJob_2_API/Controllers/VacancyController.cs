@@ -35,9 +35,9 @@ namespace FindJob_2_API.Controllers
                                && (c.MinSalary > minSalary || c.MaxSalary > minSalary)
                                )
                 join company in _db.Companies
-                    on vacancy.Id equals company.Id //into gj
+                    on vacancy.Id equals company.Id
                 join workExperience in _db.WorkExperiences
-                    on vacancy.Id equals workExperience.Id //into gj
+                    on vacancy.WorkExperienceId equals workExperience.Id
                 where (
                           (EF.Functions.Like(vacancy.Name.ToLower(), $"%{inputSearch.ToLower()}%")
                        || EF.Functions.Like(inputSearch.ToLower(), "%" + vacancy.Name.ToLower() + "%")
@@ -55,7 +55,6 @@ namespace FindJob_2_API.Controllers
                         (EF.Functions.Like(vacancy.Region.ToLower(), $"%{region.ToLower()}%")
                          || EF.Functions.Like(region.ToLower(), "%" + vacancy.Region.ToLower() + "%")
                          || region.ToLower() == "пусто")
-                // from subpet in gj.DefaultIfEmpty()
                 select new
                 {
                     vacancy.Id, 
@@ -66,7 +65,6 @@ namespace FindJob_2_API.Controllers
                     vacancy.Region, 
                     CompanyName = company.Name,
                     WorkExperience = workExperience.Name
-                    // CompanyName = subpet.Name
                 };
             
             return new JsonResult(vacancies);
@@ -87,7 +85,7 @@ namespace FindJob_2_API.Controllers
             //сделать проверку на отклик раннее
             ResponseFromClientToVacancy isResponsed =
                 _db.ResponseFromClientToVacancies.
-                FirstOrDefault(c => c.ClientId == resp.ClientId && c.VacancyId == resp.VacancyId);
+                FirstOrDefault(c => c.ClientId == resp.ClientId && c.VacancyId == resp.VacancyId && c.IsDeleted == false);
             if (isResponsed is null)
             {
                 _db.ResponseFromClientToVacancies.Add(resp);
@@ -96,6 +94,33 @@ namespace FindJob_2_API.Controllers
                 return new JsonResult("Ответ отправлен");
             }
             return new JsonResult("Вы уже откликнулись на вакансию раннее");
+        }
+        
+        [Route("[action]/{clientId}")]
+        [HttpGet]
+        public JsonResult GetClientVacancies(int clientId)
+        {
+            var vacancies = from vacancy in _db.Vacancies
+                join company in _db.Companies
+                    on vacancy.Id equals company.Id
+                join client in _db.Clients
+                    on company.Id equals client.CompanyId
+                join workExperience in _db.WorkExperiences
+                    on vacancy.WorkExperienceId equals workExperience.Id
+                where (client.Id == clientId && vacancy.IsDeleted == false)
+                select new
+                {
+                    vacancyId = vacancy.Id, 
+                    vacancy.Name, 
+                    vacancy.MinSalary, 
+                    vacancy.MaxSalary, 
+                    vacancy.Description, 
+                    vacancy.Region, 
+                    CompanyName = company.Name,
+                    WorkExperience = workExperience.Name
+                };
+            
+            return new JsonResult(vacancies);
         }
     }
 }

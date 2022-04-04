@@ -18,7 +18,38 @@ export class Authentication extends Component{
             registrationModalShow:false,
             editModalShow:false
         }
-        
+    }
+
+    RoleButtons() {
+        if (this.state.deps.role_Id === 2)
+        {
+            return (
+                <Route render={({ history}) => (
+                    <Button className="mr-2" variant="info" onClick={() => { history.push( '/responseClient/?id=') }}>
+                        Просмотр откликов
+                    </Button>
+                )} />
+            )
+        }
+        return (
+            <div>
+                <p>
+                    <Route render={({ history}) => (
+                        <Button className="mr-2" variant="info"
+                                onClick={() => { history.push( '/VacancyCreator') }}>
+                            Создать вакансию
+                        </Button>
+                    )} />
+                </p>
+                <p>
+                    <Route render={({ history}) => (
+                        <Button className="mr-2" variant="info" onClick={() => { history.push( '/VacancyListClient') }}>
+                            Просмотр активных вакансий
+                        </Button>
+                    )} />
+                </p>
+            </div>
+        )
     }
 
     ClientInformation() {
@@ -29,6 +60,7 @@ export class Authentication extends Component{
 
         return (
             <div>
+                <h3></h3>
                 <p>
                     <Button className="mr-2" variant="danger" style={{visibility: this.visibility(this.checkClientInformation()) }}
                             onClick={()=>this.exitAccount()}>Выйти из аккаунта</Button>
@@ -67,16 +99,18 @@ export class Authentication extends Component{
                     </tr>
                     <tr >
                         <th scope="row">Роль на сайте</th>
-                        <td>{this.state.deps.role}</td>
+                        <td>{this.state.deps.role_Name}</td>
                     </tr>
                     </tbody>
                 </Table>
 
-                <Route render={({ history}) => (
-                    <Button className="mr-2" variant="info" onClick={() => { history.push( '/responseClient/?id=' + id) }}>
-                        Просмотр откликов
-                    </Button>
-                )} />
+                {/*<Route render={({ history}) => (*/}
+                {/*    <Button className="mr-2" variant="info" onClick={() => { history.push( '/responseClient/?id=' + id) }}>*/}
+                {/*        Просмотр откликов*/}
+                {/*    </Button>*/}
+                {/*)} />*/}
+
+                { this.RoleButtons() }
             </div>
         )
     }
@@ -87,6 +121,7 @@ export class Authentication extends Component{
         }
         return (
             <div>
+                <h3>Зарегистрируйтесь или авторизуйтесь</h3>
                 <p>
                     <Button variant='primary' style={{visibility: this.visibility(!this.checkClientInformation()) }}
                             onClick={()=>this.setState({loginModalShow:true})}>Войти</Button>
@@ -95,7 +130,6 @@ export class Authentication extends Component{
                     <Button variant='primary' style={{visibility: this.visibility(!this.checkClientInformation()) }}
                             onClick={()=>this.setState({registrationModalShow:true})}>Зарегистрироваться</Button>
                 </p>
-                <h3>Зарегистрируйтесь или авторизуйтесь</h3>
             </div>);
     }
 

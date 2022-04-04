@@ -23,8 +23,9 @@ namespace FindJob_2_API.Models
         public string Gender { get; set; }
         public string Country { get; set; }
         public string TelephoneNumber { get; set; }
-        public string Role { get; set; }
         public bool? IsDeleted { get; set; }
+        public int? CompanyId { get; set; }
+        public int? RoleId { get; set; }
 
         public virtual ICollection<ResponseFromClientToVacancy> ResponseFromClientToVacancies { get; set; }
         public virtual ICollection<ResponseFromVacancyToClient> ResponseFromVacancyToClients { get; set; }

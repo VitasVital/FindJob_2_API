@@ -7,6 +7,8 @@ import { Vacancy } from './VacancyFolder/Vacancy';
 import { Authentication } from './ClientFolder/Authentication';
 import {VacancyModal} from "./VacancyFolder/VacancyModal";
 import {ResponseClient} from "./ClientFolder/ResponseClient";
+import {VacancyListClient} from "./ClientFolder/VacancyListClient";
+import {VacancyCreator} from "./VacancyFolder/VacancyCreator";
 
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
@@ -25,6 +27,8 @@ function App() {
         <Route path='/Authentication' component={Authentication}/>
         <Route path='/VacancyModal' component={VacancyModal}/>
         <Route path='/ResponseClient' component={ResponseClient}/>
+        <Route path='/VacancyListClient' component={VacancyListClient}/>
+        <Route path='/VacancyCreator' component={VacancyCreator}/>
       </Switch>
     </div>
     </BrowserRouter>

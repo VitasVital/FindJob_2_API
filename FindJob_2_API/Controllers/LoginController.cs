@@ -27,24 +27,25 @@ namespace FindJob_2_API.Controllers
         [HttpGet]
         public JsonResult GetUser(int id)
         {
-            var client = _db
-                .Clients
-                .Select(p => new
+            var found_client = from client in _db.
+                    Clients.
+                    Where(c => c.Id == id)
+                    join role in _db.Roles on client.RoleId equals role.Id
+                    select new
                     {
-                        p.Id,
-                        p.Name,
-                        p.Email,
-                        p.Country,
-                        p.Region,
-                        DateBirth = p.DateBirth.ToString(),
-                        p.TelephoneNumber,
-                        p.Role
+                        client.Id,
+                        client.Name,
+                        client.Email,
+                        client.Country,
+                        client.Region,
+                        DateBirth = client.DateBirth.ToString(),
+                        client.TelephoneNumber,
+                        role_Id = role.Id,
+                        role_Name = role.Name
                     }
-                )
-                .FirstOrDefault(c => c.Id == id)
                 ;
 
-            return new JsonResult(client);
+            return new JsonResult(found_client.FirstOrDefault(c => c.Id == id));
         }
 
         [HttpPost]
@@ -91,7 +92,7 @@ namespace FindJob_2_API.Controllers
             _client.Gender = client.Gender;
             _client.Country = client.Country;
             _client.TelephoneNumber = client.TelephoneNumber;
-            _client.Role = client.Role;
+            _client.RoleId = client.RoleId;
 
             _db.SaveChanges();
 

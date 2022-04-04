@@ -25,6 +25,7 @@ namespace FindJob_2_API.Models
         public virtual DbSet<ResponseFromVacancyToClient> ResponseFromVacancyToClients { get; set; }
         public virtual DbSet<Resume> Resumes { get; set; }
         public virtual DbSet<ResumeKeySkill> ResumeKeySkills { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Vacancy> Vacancies { get; set; }
         public virtual DbSet<VacancyKeySkill> VacancyKeySkills { get; set; }
         public virtual DbSet<WorkExperience> WorkExperiences { get; set; }
@@ -46,6 +47,8 @@ namespace FindJob_2_API.Models
             modelBuilder.Entity<Client>(entity =>
             {
                 entity.ToTable("Client");
+
+                entity.Property(e => e.CompanyId).HasColumnName("Company_Id");
 
                 entity.Property(e => e.Country)
                     .HasMaxLength(50)
@@ -75,9 +78,7 @@ namespace FindJob_2_API.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Role)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.RoleId).HasColumnName("Role_Id");
 
                 entity.Property(e => e.TelephoneNumber)
                     .HasMaxLength(50)
@@ -218,6 +219,18 @@ namespace FindJob_2_API.Models
                     .WithMany(p => p.ResumeKeySkills)
                     .HasForeignKey(d => d.ResumeId)
                     .HasConstraintName("FK_Resume_Key_skills_Resume_Id");
+            });
+
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.ToTable("Role");
+
+                entity.HasIndex(e => e.Id, "Role_Id_uindex")
+                    .IsUnique();
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(36)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Vacancy>(entity =>

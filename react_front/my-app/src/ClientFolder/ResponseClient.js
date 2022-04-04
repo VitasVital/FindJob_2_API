@@ -3,7 +3,6 @@ import {Modal, Button, Row, Col, Form, Table} from 'react-bootstrap';
 
 import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
 import queryString from 'query-string';
-import {StockWorkShedule} from "../StockData";
 
 export class ResponseClient extends Component{
     constructor(props){
