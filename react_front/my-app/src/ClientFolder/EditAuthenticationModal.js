@@ -161,9 +161,11 @@ export class EditAuthenticationModal extends Component{
                                     </Form.Group>
 
                                     <Form.Group>
+                                        <h1></h1>
                                         <Button variant="primary" type="submit">
                                             Изменить
                                         </Button>
+                                        <h1></h1>
                                     </Form.Group>
 
                                     <Button className="mr-2" variant="danger"

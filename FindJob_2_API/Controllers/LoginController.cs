@@ -40,6 +40,7 @@ namespace FindJob_2_API.Controllers
                         client.Region,
                         DateBirth = client.DateBirth.ToString(),
                         client.TelephoneNumber,
+                        client.CompanyId,
                         role_Id = role.Id,
                         role_Name = role.Name
                     }

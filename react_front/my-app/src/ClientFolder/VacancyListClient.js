@@ -58,10 +58,12 @@ export class VacancyListClient extends Component{
                                 )} />
                             </td>
                             <td>
-                                <Button className="mr-2" variant="info"
-                                        onClick={()=>this.deleteResponce(dep.clientResponcesId)}>
-                                    Посмотреть отклики
-                                </Button>
+                                <Route render={({ history}) => (
+                                    <Button className="mr-2" variant="info"
+                                            onClick={() => { history.push( '/VacancyResponseFromClientToVacancy/?id=' + dep.vacancyId) }}>
+                                        Посмотреть отклики
+                                    </Button>
+                                )} />
                             </td>
                         </tr>)}
                     </tbody>

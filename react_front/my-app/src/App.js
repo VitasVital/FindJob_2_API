@@ -9,6 +9,7 @@ import {VacancyModal} from "./VacancyFolder/VacancyModal";
 import {ResponseClient} from "./ClientFolder/ResponseClient";
 import {VacancyListClient} from "./ClientFolder/VacancyListClient";
 import {VacancyCreator} from "./VacancyFolder/VacancyCreator";
+import {VacancyResponseFromClientToVacancy} from "./VacancyFolder/VacancyResponseFromClientToVacancy";
 
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
@@ -29,6 +30,7 @@ function App() {
         <Route path='/ResponseClient' component={ResponseClient}/>
         <Route path='/VacancyListClient' component={VacancyListClient}/>
         <Route path='/VacancyCreator' component={VacancyCreator}/>
+        <Route path='/VacancyResponseFromClientToVacancy' component={VacancyResponseFromClientToVacancy}/>
       </Switch>
     </div>
     </BrowserRouter>

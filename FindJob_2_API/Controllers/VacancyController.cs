@@ -85,7 +85,9 @@ namespace FindJob_2_API.Controllers
             //сделать проверку на отклик раннее
             ResponseFromClientToVacancy isResponsed =
                 _db.ResponseFromClientToVacancies.
-                FirstOrDefault(c => c.ClientId == resp.ClientId && c.VacancyId == resp.VacancyId && c.IsDeleted == false);
+                FirstOrDefault(c => c.ClientId == resp.ClientId && 
+                                    c.VacancyId == resp.VacancyId && 
+                                    c.IsDeleted == false);
             if (isResponsed is null)
             {
                 _db.ResponseFromClientToVacancies.Add(resp);
@@ -102,7 +104,7 @@ namespace FindJob_2_API.Controllers
         {
             var vacancies = from vacancy in _db.Vacancies
                 join company in _db.Companies
-                    on vacancy.Id equals company.Id
+                    on vacancy.CompanyId equals company.Id
                 join client in _db.Clients
                     on company.Id equals client.CompanyId
                 join workExperience in _db.WorkExperiences
@@ -121,6 +123,38 @@ namespace FindJob_2_API.Controllers
                 };
             
             return new JsonResult(vacancies);
+        }
+        
+        [Route("[action]/{vacancyId}")]
+        [HttpGet]
+        public JsonResult GetResponseFromClientToVacancy(int vacancyId)
+        {
+            var responces = from responce in _db.ResponseFromClientToVacancies
+                join client in _db.Clients
+                    on responce.ClientId equals client.Id
+                where (responce.VacancyId == vacancyId && responce.IsDeleted == false)
+                select new
+                {
+                    client.Id, 
+                    client.Name, 
+                    client.Email, 
+                    client.Country,
+                    client.Region, 
+                    DateBirth = client.DateBirth.ToString(),
+                    client.Gender,
+                    client.TelephoneNumber
+                };
+            
+            return new JsonResult(responces);
+        }
+        
+        [Route("[action]")]
+        [HttpPost]
+        public JsonResult CreateNewVacancy(Vacancy vacancy)
+        {
+            _db.Vacancies.Add(vacancy);
+            _db.SaveChanges();
+            return new JsonResult("Вакансия успешно создана");
         }
     }
 }
