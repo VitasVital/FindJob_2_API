@@ -205,6 +205,7 @@ export class RegistrationModal extends Component{
                                 </Form.Group>
 
                                 <Form.Group>
+                                    <h1></h1>
                                     <Button className="mr-2" variant="primary"
                                             onClick={()=>this.handleSubmit()}>
                                         Зарегистрироваться

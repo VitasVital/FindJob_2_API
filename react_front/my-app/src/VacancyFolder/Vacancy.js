@@ -19,7 +19,6 @@ export class Vacancy extends Component{
         this.state={
             deps:[],
             stockWorkExperience: StockWorkExperience,
-            // deps: StockVacancies,
 
             inputSearch: '',
 
@@ -43,10 +42,6 @@ export class Vacancy extends Component{
         let inputSearch_help = this.state.inputSearch;
         let country_help = this.state.country;
         let region_help = this.state.region;
-        // if (inputSearch_help === '')
-        // {
-        //     inputSearch_help = 'пусто';
-        // }
         inputSearch_help = inputSearch_help === '' ? 'пусто' : inputSearch_help;
         country_help = country_help === '' ? 'пусто' : country_help;
         region_help = region_help === '' ? 'пусто' : region_help;
@@ -216,7 +211,7 @@ export class Vacancy extends Component{
                                 <td>{dep.workExperience}</td>
                                 <td>
                                     <Route render={({ history}) => (
-                                        <Button className="mr-2" variant="info" onClick={() => { history.push( '/vacancyModal/?id=' + dep.id) }}>
+                                        <Button className="mr-2" variant="info" onClick={() => { history.push( '/vacancyModal/?vacancyId=' + dep.id) }}>
                                             Просмотр
                                         </Button>
                                     )} />

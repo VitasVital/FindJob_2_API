@@ -21,12 +21,25 @@ export class VacancyListClient extends Component{
         fetch(process.env.REACT_APP_API +'Vacancy/GetClientVacancies/'+id_client)
             .then(response => response.json())
             .then(data => this.setState({ vacancyList: data }));
+
+        fetch(process.env.REACT_APP_API+'login/GetUser/'+id_client)
+            .then(response=>response.json())
+            .then(data=>{
+                this.setState({deps:data});
+            });
     }
 
     RenderData() {
+
         return (
             <div>
                 <h1>Список активных вакансий</h1>
+                <Route render={({ history}) => (
+                    <Button className="mr-2" variant="info"
+                            onClick={() => { history.push( `/VacancyResponseFromClientToVacancy/?companyId=${0}&vacancyId=0`) }}>
+                        Посмотреть все отклики
+                    </Button>
+                )} />
                 <Table className="mt-4" striped bordered hover size="sm" style={{ textAlign: "center" }}>
                     <thead>
                     <tr>
@@ -52,7 +65,7 @@ export class VacancyListClient extends Component{
                             <td>
                                 <Route render={({ history}) => (
                                     <Button className="mr-2" variant="info"
-                                            onClick={() => { history.push( '/vacancyModal/?id=' + dep.vacancyId) }}>
+                                            onClick={() => { history.push( '/vacancyModal/?vacancyId=' + dep.vacancyId) }}>
                                         Просмотр вакансии
                                     </Button>
                                 )} />
@@ -60,7 +73,7 @@ export class VacancyListClient extends Component{
                             <td>
                                 <Route render={({ history}) => (
                                     <Button className="mr-2" variant="info"
-                                            onClick={() => { history.push( '/VacancyResponseFromClientToVacancy/?id=' + dep.vacancyId) }}>
+                                            onClick={() => { history.push( '/VacancyResponseFromClientToVacancy/?vacancyId=' + dep.vacancyId) }}>
                                         Посмотреть отклики
                                     </Button>
                                 )} />

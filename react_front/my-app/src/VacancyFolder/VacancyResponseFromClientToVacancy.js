@@ -8,14 +8,27 @@ export class VacancyResponseFromClientToVacancy extends Component{
     constructor(props){
         super(props);
         this.state={
-            clientList: []
+            clientList: [],
+            deps: null
         }
     }
 
     componentDidMount() {
-        const value = queryString.parse(this.props.location.search);
-        const id_modal = value.id;
-        fetch(process.env.REACT_APP_API +'Vacancy/GetResponseFromClientToVacancy/'+id_modal)
+        let matches_id = document.cookie.match(new RegExp(
+            "(?:^|; )" + 'id'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        if (matches_id)
+        {
+            let clientId = decodeURIComponent(matches_id[1]);
+            fetch(process.env.REACT_APP_API+'login/GetUser/'+clientId)
+                .then(response=>response.json())
+                .then(data=>{
+                    this.setState({deps:data});
+                });
+
+        }
+        const vacancyId = queryString.parse(this.props.location.search).vacancyId;
+        fetch(process.env.REACT_APP_API +`Vacancy/GetResponseFromClientToVacancy/${vacancyId}/${0}`)
             .then(response => response.json())
             .then(data => this.setState({ clientList: data }));
     }

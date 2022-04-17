@@ -25,7 +25,7 @@ export class Authentication extends Component{
         {
             return (
                 <Route render={({ history}) => (
-                    <Button className="mr-2" variant="info" onClick={() => { history.push( '/responseClient/?id=') }}>
+                    <Button className="mr-2" variant="info" onClick={() => { history.push( '/responseClient/?id=' + this.state.deps.id) }}>
                         Просмотр откликов
                     </Button>
                 )} />
@@ -53,10 +53,6 @@ export class Authentication extends Component{
     }
 
     ClientInformation() {
-        let matches_id = document.cookie.match(new RegExp(
-            "(?:^|; )" + 'id'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-        ));
-        let id = decodeURIComponent(matches_id[1]);
 
         return (
             <div>
@@ -103,12 +99,6 @@ export class Authentication extends Component{
                     </tr>
                     </tbody>
                 </Table>
-
-                {/*<Route render={({ history}) => (*/}
-                {/*    <Button className="mr-2" variant="info" onClick={() => { history.push( '/responseClient/?id=' + id) }}>*/}
-                {/*        Просмотр откликов*/}
-                {/*    </Button>*/}
-                {/*)} />*/}
 
                 { this.RoleButtons() }
             </div>
@@ -157,15 +147,12 @@ export class Authentication extends Component{
         this.checkCookie();
     }
 
-    componentDidUpdate(){
-    }
-
     exitAccount(){
         let matches_id = document.cookie.match(new RegExp(
             "(?:^|; )" + 'id'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
         ));
         if(window.confirm('Вы действительно хотите выйти из аккаунта?')){
-            document.cookie = "id=" + {matches_id} + ";" + "max-age=0";
+            document.cookie = `id=${matches_id};max-age=0`;
         }
         window.location.reload();
     }
@@ -183,7 +170,10 @@ export class Authentication extends Component{
 
     render(){
         const {deps}=this.state;
-        let loginModalClose=()=>this.setState({loginModalShow:false});
+        let loginModalClose=()=>{
+            this.setState({loginModalShow:false});
+            window.location.reload();
+        };
         let registrationModalClose=()=>this.setState({registrationModalShow:false});
         let editModalClose=()=>this.setState({editModalShow:false});
         let showInformation = this.checkClientInformation();

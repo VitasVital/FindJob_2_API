@@ -1,6 +1,5 @@
 import React,{Component} from 'react';
 import {Modal,Button, Row, Col, Form} from 'react-bootstrap';
-import {StockVacancies} from "../StockData";
 
 export class LoginModal extends Component{
     constructor(props){
@@ -32,8 +31,9 @@ export class LoginModal extends Component{
         .then((result)=>{
             if (result !== 'Неудачная авторизация')
             {
-                document.cookie = "id" + "=" + encodeURIComponent(result);
+                document.cookie = `id=${encodeURIComponent(result)}`;
                 alert('Успешная авторизация');
+                this.props.onHide();
             }
             else
             {
@@ -67,10 +67,6 @@ export class LoginModal extends Component{
                     <Modal.Body>
                         <Row>
                             <Col sm={6}>
-                                <p>
-                                    gsdhsdgh@dfsfs
-                                    fsdvxc
-                                </p>
                                 <Form.Group controlId="name">
                                     <Form.Label>Логин</Form.Label>
                                     <Form.Control type="text" placeholder = "Логин" value={this.state.login} onChange={ this.handleInputChange1 }/>
@@ -81,6 +77,7 @@ export class LoginModal extends Component{
                                 </Form.Group>
 
                                 <Form.Group>
+                                    <h1></h1>
                                     <Button className="mr-2" variant="primary"
                                             onClick={()=>this.handleSubmit()}>
                                         Войти

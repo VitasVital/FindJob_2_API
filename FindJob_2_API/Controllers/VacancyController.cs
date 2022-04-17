@@ -125,14 +125,16 @@ namespace FindJob_2_API.Controllers
             return new JsonResult(vacancies);
         }
         
-        [Route("[action]/{vacancyId}")]
+        [Route("[action]/{vacancyId}/{companyId}")]
         [HttpGet]
-        public JsonResult GetResponseFromClientToVacancy(int vacancyId)
+        public JsonResult GetResponseFromClientToVacancy(int vacancyId, int companyId)
         {
             var responces = from responce in _db.ResponseFromClientToVacancies
                 join client in _db.Clients
                     on responce.ClientId equals client.Id
-                where (responce.VacancyId == vacancyId && responce.IsDeleted == false)
+                // join company in _db.Companies
+                //     on company.
+                where ((responce.VacancyId == vacancyId || vacancyId == 0) && responce.IsDeleted == false)
                 select new
                 {
                     client.Id, 
