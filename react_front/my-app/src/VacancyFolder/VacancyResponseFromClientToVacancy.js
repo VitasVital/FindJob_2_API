@@ -14,21 +14,9 @@ export class VacancyResponseFromClientToVacancy extends Component{
     }
 
     componentDidMount() {
-        let matches_id = document.cookie.match(new RegExp(
-            "(?:^|; )" + 'id'.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-        ));
-        if (matches_id)
-        {
-            let clientId = decodeURIComponent(matches_id[1]);
-            fetch(process.env.REACT_APP_API+'login/GetUser/'+clientId)
-                .then(response=>response.json())
-                .then(data=>{
-                    this.setState({deps:data});
-                });
-
-        }
         const vacancyId = queryString.parse(this.props.location.search).vacancyId;
-        fetch(process.env.REACT_APP_API +`Vacancy/GetResponseFromClientToVacancy/${vacancyId}/${0}`)
+        const companyId = queryString.parse(this.props.location.search).companyId;
+        fetch(process.env.REACT_APP_API +`Vacancy/GetResponseFromClientToVacancy/${vacancyId}/${companyId}`)
             .then(response => response.json())
             .then(data => this.setState({ clientList: data }));
     }
@@ -40,6 +28,7 @@ export class VacancyResponseFromClientToVacancy extends Component{
                 <Table className="mt-4" striped bordered hover size="sm" style={{ textAlign: "center" }}>
                     <thead>
                     <tr>
+                        <th>Название вакансии</th>
                         <th>Имя</th>
                         <th>Email</th>
                         <th>Страна</th>
@@ -52,6 +41,7 @@ export class VacancyResponseFromClientToVacancy extends Component{
                     <tbody>
                     {this.state.clientList.map(dep=>
                         <tr key={dep.id}>
+                            <td>{dep.vacancyName}</td>
                             <td>{dep.name}</td>
                             <td>{dep.email}</td>
                             <td>{dep.country}</td>

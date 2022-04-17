@@ -36,7 +36,7 @@ export class VacancyListClient extends Component{
                 <h1>Список активных вакансий</h1>
                 <Route render={({ history}) => (
                     <Button className="mr-2" variant="info"
-                            onClick={() => { history.push( `/VacancyResponseFromClientToVacancy/?companyId=${0}&vacancyId=0`) }}>
+                            onClick={() => { history.push( `/VacancyResponseFromClientToVacancy/?companyId=${this.state.deps.companyId}&vacancyId=0`) }}>
                         Посмотреть все отклики
                     </Button>
                 )} />
@@ -73,7 +73,7 @@ export class VacancyListClient extends Component{
                             <td>
                                 <Route render={({ history}) => (
                                     <Button className="mr-2" variant="info"
-                                            onClick={() => { history.push( '/VacancyResponseFromClientToVacancy/?vacancyId=' + dep.vacancyId) }}>
+                                            onClick={() => { history.push( `/VacancyResponseFromClientToVacancy/?companyId=${this.state.deps.companyId}&vacancyId=${dep.vacancyId}`) }}>
                                         Посмотреть отклики
                                     </Button>
                                 )} />

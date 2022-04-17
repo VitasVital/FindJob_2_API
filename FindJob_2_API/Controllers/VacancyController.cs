@@ -30,12 +30,12 @@ namespace FindJob_2_API.Controllers
         {
             var vacancies = from vacancy in _db.
                     Vacancies
-                    .Where(c => c.WorkScheduleId == workScheduleId
+                    .Where(c => (c.WorkScheduleId == workScheduleId || workScheduleId == 1)
                                && (c.WorkExperienceId == workExperienceId || workExperienceId == 1)
                                && (c.MinSalary > minSalary || c.MaxSalary > minSalary)
                                )
                 join company in _db.Companies
-                    on vacancy.Id equals company.Id
+                    on vacancy.CompanyId equals company.Id
                 join workExperience in _db.WorkExperiences
                     on vacancy.WorkExperienceId equals workExperience.Id
                 where (
@@ -132,12 +132,13 @@ namespace FindJob_2_API.Controllers
             var responces = from responce in _db.ResponseFromClientToVacancies
                 join client in _db.Clients
                     on responce.ClientId equals client.Id
-                // join company in _db.Companies
-                //     on company.
-                where ((responce.VacancyId == vacancyId || vacancyId == 0) && responce.IsDeleted == false)
+                join vacancy in _db.Vacancies
+                    on responce.VacancyId equals vacancy.Id
+                where ((responce.VacancyId == vacancyId || vacancyId == 0) && client.CompanyId == companyId && responce.IsDeleted == false)
                 select new
                 {
                     client.Id, 
+                    vacancyName = vacancy.Name,
                     client.Name, 
                     client.Email, 
                     client.Country,
