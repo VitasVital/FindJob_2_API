@@ -11,7 +11,7 @@ namespace FindJob_2_API.Controllers
     [ApiController]
     public class RegistrationController : Controller
     {
-        public Find_JobDBContext _db;
+        private Find_JobDBContext _db;
 
         public RegistrationController(Find_JobDBContext context)
         {
@@ -22,7 +22,7 @@ namespace FindJob_2_API.Controllers
         public JsonResult Post(Client client)
         {
             Client _client = _db.Clients.
-                FirstOrDefault(c => c.Email == client.Email && c.Password == client.Password);
+                FirstOrDefault(c => c.Email == client.Email && c.IsDeleted == false);
             if (_client is null)
             {
                 _db.Clients.Add(client);

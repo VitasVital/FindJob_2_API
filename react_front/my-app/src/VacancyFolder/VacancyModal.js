@@ -80,15 +80,17 @@ export class VacancyModal extends Component{
                 return (
                     <div>
                         <p>
-                            <Button className="mr-2" variant="info" onClick={() => this.handleSubmit()}>
+                            <Button className="mr-2" variant="info"
+                                    onClick={() => { window.open( '/VacancyCreator') }}>
                                 Редактировать вакансию
                             </Button>
                         </p>
-                        <p>
-                            <Button className="mr-2" variant="info" onClick={() => this.handleSubmit()}>
+                        <Route render={({ history}) => (
+                            <Button className="mr-2" variant="info"
+                                    onClick={() => { history.push( `/VacancyResponseFromClientToVacancy/?companyId=${this.state.clientInformation.companyId}&vacancyId=${this.state.vacancyModal.id}`) }}>
                                 Посмотреть отклики
                             </Button>
-                        </p>
+                        )} />
                     </div>
                 );
             }

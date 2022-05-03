@@ -73,7 +73,7 @@ export class RegistrationModal extends Component{
                 Country: this.state.country,
                 Region: this.state.region,
                 TelephoneNumber: this.state.telephoneNumber,
-                Role: this.state.optionSelected_role.label,
+                RoleId: this.state.optionSelected_role.value,
                 IsDeleted: false
             })
         })

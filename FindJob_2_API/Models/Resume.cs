@@ -15,7 +15,7 @@ namespace FindJob_2_API.Models
         public int Id { get; set; }
         public int? ClientId { get; set; }
         public string JobTitle { get; set; }
-        public string Salary { get; set; }
+        public double? Salary { get; set; }
         public int? EmploymentId { get; set; }
         public int? WorkScheduleId { get; set; }
         public string Photo { get; set; }

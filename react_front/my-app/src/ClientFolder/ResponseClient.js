@@ -68,7 +68,7 @@ export class ResponseClient extends Component{
                                 <td>{dep.workExperience}</td>
                                 <td>
                                     <Route render={({ history}) => (
-                                        <Button className="mr-2" variant="info" onClick={() => { history.push( '/vacancyModal/?id=' + dep.vacancyId) }}>
+                                        <Button className="mr-2" variant="info" onClick={() => { history.push( '/vacancyModal/?vacancyId=' + dep.vacancyId) }}>
                                             Просмотр вакансии
                                         </Button>
                                     )} />

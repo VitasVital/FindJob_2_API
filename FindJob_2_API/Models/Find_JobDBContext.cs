@@ -175,10 +175,6 @@ namespace FindJob_2_API.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Salary)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.WorkExperienceId).HasColumnName("Work_experienceId");
 
                 entity.Property(e => e.WorkScheduleId).HasColumnName("Work_scheduleId");

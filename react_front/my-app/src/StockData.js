@@ -93,6 +93,28 @@ export const StockRole = [
   }
 ];
 
+export const StockEmployment = [
+  {
+    value: 1,
+    label: 'Полная занятость'
+  },
+  {
+    value: 2,
+    label: 'Частичная занятость'
+  },
+  {
+    value: 3,
+    label: 'Проектная работа'
+  },
+  {
+    value: 4,
+    label: 'Волонтерство'
+  },{
+    value: 5,
+    label: 'Стажировка'
+  }
+];
+
 export const StockVacancies = [
   {
     id: 1,

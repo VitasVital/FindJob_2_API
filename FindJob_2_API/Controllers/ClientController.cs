@@ -16,7 +16,7 @@ namespace FindJob_2_API.Controllers
     public class ClientController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public Find_JobDBContext _db;
+        private Find_JobDBContext _db;
 
         public ClientController(IConfiguration configuration, Find_JobDBContext context)
         {
@@ -72,6 +72,51 @@ namespace FindJob_2_API.Controllers
             _db.SaveChanges();
 
             return new JsonResult("Успушно удалён отклик");
+        }
+        
+        [Route("[action]/{clientId}")]
+        [HttpGet]
+        public JsonResult GetResume(int clientId)
+        {
+            var resumeClient = from resume in _db.
+                    Resumes
+                    .Where(c => c.ClientId == clientId)
+                join client in _db.Clients
+                    on resume.ClientId equals client.Id
+                join employment in _db.Employments
+                    on resume.EmploymentId equals employment.Id
+                join workSchedule in _db.WorkSchedules
+                    on resume.WorkScheduleId equals workSchedule.Id
+                join workExperience in _db.WorkExperiences
+                    on resume.WorkExperienceId equals workExperience.Id
+                select new
+                {
+                    resumeId = resume.Id,
+                    client.Name,
+                    client.Email,
+                    client.Country,
+                    client.Region,
+                    DateBirth = client.DateBirth.ToString(),
+                    client.Gender,
+                    client.TelephoneNumber,
+                    resume.JobTitle,
+                    resume.Salary,
+                    employmentName = employment.Name,
+                    workScheduleName = workSchedule.Name,
+                    resume.Education,
+                    workExperienceName = workExperience.Name
+                };
+
+            return new JsonResult(resumeClient.FirstOrDefault());
+        }
+        
+        [Route("[action]")]
+        [HttpPost]
+        public JsonResult CreateNewResume(Resume resume)
+        {
+            _db.Resumes.Add(resume);
+            _db.SaveChanges();
+            return new JsonResult("Резюме успешно создано");
         }
     }
 }

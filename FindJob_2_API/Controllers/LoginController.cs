@@ -12,7 +12,7 @@ namespace FindJob_2_API.Controllers
     [ApiController]
     public class LoginController : Controller
     {
-        public Find_JobDBContext _db;
+        private Find_JobDBContext _db;
 
         public LoginController(Find_JobDBContext context)
         {
@@ -21,7 +21,7 @@ namespace FindJob_2_API.Controllers
         [HttpGet("{email}/{password}")]
         public JsonResult Get(string email, string password)
         {
-            return new JsonResult(_db.Clients.FirstOrDefault(c => c.Email == email && c.Password == password && c.IsDeleted != true));
+            return new JsonResult(_db.Clients.FirstOrDefault(c => c.Email == email && c.Password == password && c.IsDeleted == false));
         }
         [Route("[action]/{id}")]
         [HttpGet]
@@ -53,7 +53,7 @@ namespace FindJob_2_API.Controllers
         public JsonResult Post(Client client)
         {
             Client _client = _db.Clients.
-                FirstOrDefault(c => c.Email == client.Email && c.Password == client.Password && c.IsDeleted != true);
+                FirstOrDefault(c => c.Email == client.Email && c.Password == client.Password && c.IsDeleted == false);
             if (_client is null)
             {
                 return new JsonResult("Нет данного пользователя");
@@ -64,13 +64,13 @@ namespace FindJob_2_API.Controllers
         [HttpDelete("{email}/{password}")]
         public JsonResult Delete(string email, string password)
         {
-            Client client = _db.Clients.FirstOrDefault(c => c.Email == email && c.Password == password && c.IsDeleted != true);
+            Client _client = _db.Clients.FirstOrDefault(c => c.Email == email && c.Password == password && c.IsDeleted == false);
 
-            if (client is null)
+            if (_client is null)
             {
                 return new JsonResult("Нет пользователя");
             }
-            _db.Clients.FirstOrDefault(c => c.Email == email && c.Password == password).IsDeleted = true;
+            _client.IsDeleted = true;
             _db.SaveChanges();
 
             return new JsonResult("Успушно удалён");
@@ -80,9 +80,8 @@ namespace FindJob_2_API.Controllers
         public JsonResult Put(Client client)
         {
             Client _client = _db.Clients.FirstOrDefault(c => c.Id == client.Id);
-            if (client is null)
+            if (_client is null)
             {
-
                 return new JsonResult("Нет пользователя");
             }
             _client.Name = client.Name;

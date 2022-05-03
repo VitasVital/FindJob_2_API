@@ -39,13 +39,6 @@ namespace FindJob_2_API
             services.AddDbContext<Find_JobDBContext>(options => 
             options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
-            //services.AddControllersWithViews()
-            //    .AddNewtonsoftJson(options =>
-            //    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft
-            //    .Json.ReferenceLoopHandling.Ignore)
-            //    .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver
-            //    = new DefaultContractResolver());
-
             services.AddControllers();
         }
 

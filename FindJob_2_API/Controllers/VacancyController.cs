@@ -12,7 +12,7 @@ namespace FindJob_2_API.Controllers
     [ApiController]
     public class VacancyController : Controller
     {
-        public Find_JobDBContext _db;
+        private Find_JobDBContext _db;
 
         public VacancyController(Find_JobDBContext context)
         {
@@ -74,7 +74,7 @@ namespace FindJob_2_API.Controllers
         [HttpGet]
         public JsonResult GetVacancy(int id)
         {
-            Vacancy vacancy = _db.Vacancies.FirstOrDefault(c => c.Id == id);
+            Vacancy vacancy = _db.Vacancies.FirstOrDefault(c => c.Id == id && c.IsDeleted == false);
 
             return new JsonResult(vacancy);
         }

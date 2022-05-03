@@ -16,19 +16,52 @@ export class Authentication extends Component{
             dateBirthHelp: '',
             loginModalShow:false,
             registrationModalShow:false,
-            editModalShow:false
+            editModalShow:false,
+            resumeClient: null
         }
     }
 
     RoleButtons() {
-        if (this.state.deps.role_Id === 2)
+        if (this.state.deps.role_Id === 2 && this.state.resumeClient !== null)
         {
             return (
-                <Route render={({ history}) => (
-                    <Button className="mr-2" variant="info" onClick={() => { history.push( '/responseClient/?id=' + this.state.deps.id) }}>
-                        Просмотр откликов
-                    </Button>
-                )} />
+                <div>
+                    <p>
+                        <Route render={({ history}) => (
+                            <Button className="mr-2" variant="info" onClick={() => { history.push( '/ResumeModal/?clientId=' + this.state.deps.id) }}>
+                                Посмотреть резюме
+                            </Button>
+                        )} />
+                    </p>
+                    <p>
+                        <Route render={({ history}) => (
+                            <Button className="mr-2" variant="info" onClick={() => { history.push( '/responseClient/?id=' + this.state.deps.id) }}>
+                                Просмотр откликов
+                            </Button>
+                        )} />
+                    </p>
+                </div>
+            )
+        }
+        if (this.state.deps.role_Id === 2 && this.state.resumeClient === null)
+        {
+            return (
+                <div>
+                    <p>
+                        <Route render={({ history}) => (
+                            <Button className="mr-2" variant="info" onClick={() => { history.push( '/responseClient/?id=' + this.state.deps.id) }}>
+                                Создать резюме
+                            </Button>
+                        )} />
+                    </p>
+                    <p>
+                        <Route render={({ history}) => (
+                            <Button className="mr-2" variant="info" onClick={() => { history.push( '/responseClient/?id=' + this.state.deps.id) }}>
+                                Просмотр откликов
+                            </Button>
+                        )} />
+                    </p>
+                </div>
             )
         }
         return (
@@ -123,12 +156,17 @@ export class Authentication extends Component{
             </div>);
     }
 
-    refreshList(id){
-        fetch(process.env.REACT_APP_API+'login/GetUser/'+id)
+    async refreshList(id){
+        await fetch(process.env.REACT_APP_API+'login/GetUser/'+id)
         .then(response=>response.json())
         .then(data=>{
             this.setState({deps:data});
         });
+        await fetch(process.env.REACT_APP_API+'client/GetResume/'+this.state.deps.id)
+            .then(response=>response.json())
+            .then(data=>{
+                this.setState({resumeClient: data});
+            });
     }
 
     checkCookie() {
