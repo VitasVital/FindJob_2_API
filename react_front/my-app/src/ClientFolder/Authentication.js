@@ -49,7 +49,7 @@ export class Authentication extends Component{
                 <div>
                     <p>
                         <Route render={({ history}) => (
-                            <Button className="mr-2" variant="info" onClick={() => { history.push( '/responseClient/?id=' + this.state.deps.id) }}>
+                            <Button className="mr-2" variant="info" onClick={() => { history.push( '/ResumeCreator') }}>
                                 Создать резюме
                             </Button>
                         )} />

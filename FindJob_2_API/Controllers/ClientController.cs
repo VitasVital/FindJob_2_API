@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
 using System.Data;
 using FindJob_2_API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FindJob_2_API.Controllers
 {
@@ -117,6 +118,59 @@ namespace FindJob_2_API.Controllers
             _db.Resumes.Add(resume);
             _db.SaveChanges();
             return new JsonResult("Резюме успешно создано");
+        }
+        
+        [Route("[action]/{workScheduleId}/{workExperienceId}/{minSalary}/{inputSearch}/{country}/{region}")]
+        [HttpGet]
+        public JsonResult GetResumesWithParams(int workScheduleId, 
+            int workExperienceId, 
+            int minSalary, 
+            string inputSearch, 
+            string country, 
+            string region)
+        {
+            var resumes = from resume in _db.
+                    Resumes
+                    .Where(c => (c.WorkScheduleId == workScheduleId || workScheduleId == 1)
+                               && (c.WorkExperienceId == workExperienceId || workExperienceId == 1)
+                               && c.Salary > minSalary
+                               )
+                join client in _db.Clients
+                    on resume.ClientId equals client.Id
+                join workExperience in _db.WorkExperiences
+                    on resume.WorkExperienceId equals workExperience.Id
+                join employment in _db.Employments
+                    on resume.EmploymentId equals employment.Id
+                join workSchedule in _db.WorkSchedules
+                    on resume.EmploymentId equals workSchedule.Id
+                where (
+                          EF.Functions.Like(resume.JobTitle.ToLower(), $"%{inputSearch.ToLower()}%")
+                       || EF.Functions.Like(inputSearch.ToLower(), "%" + resume.JobTitle.ToLower() + "%")
+                       || inputSearch.ToLower() == "пусто"
+                    )
+                    &&
+                        (EF.Functions.Like(client.Country.ToLower(), $"%{country.ToLower()}%")
+                         || EF.Functions.Like(country.ToLower(), "%" + client.Country.ToLower() + "%")
+                         || country.ToLower() == "пусто")
+                    &&
+                        (EF.Functions.Like(client.Region.ToLower(), $"%{region.ToLower()}%")
+                         || EF.Functions.Like(region.ToLower(), "%" + client.Region.ToLower() + "%")
+                         || region.ToLower() == "пусто")
+                select new
+                {
+                    client.Id,
+                    client.Name,
+                    resume.JobTitle, 
+                    resume.Salary, 
+                    resume.Education, 
+                    client.Country, 
+                    client.Region, 
+                    WorkExperience = workExperience.Name,
+                    Employment = employment.Name,
+                    WorkSchedule = workSchedule.Name
+                };
+            
+            return new JsonResult(resumes);
         }
     }
 }

@@ -12,8 +12,9 @@ import {VacancyCreator} from "./VacancyFolder/VacancyCreator";
 import {VacancyResponseFromClientToVacancy} from "./VacancyFolder/VacancyResponseFromClientToVacancy";
 
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import {ResumeModal} from "./ClientFolder/ResumeModal";
-import {ResumeCreator} from "./ClientFolder/ResumeCreator";
+import {ResumeModal} from "./Resume/ResumeModal";
+import {ResumeCreator} from "./Resume/ResumeCreator";
+import {Resume} from "./Resume/Resume";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path='/VacancyResponseFromClientToVacancy' component={VacancyResponseFromClientToVacancy}/>
         <Route path='/ResumeModal' component={ResumeModal}/>
         <Route path='/ResumeCreator' component={ResumeCreator}/>
+        <Route path='/Resume' component={Resume}/>
       </Switch>
     </div>
     </BrowserRouter>

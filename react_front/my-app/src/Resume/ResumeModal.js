@@ -23,7 +23,7 @@ export class ResumeModal extends Component{
         if (this.state.resumeClient !== null) {
             return (
                 <div>
-                    <h2>{this.state.resumeClient.jobTitle}</h2>
+                    <h1>{this.state.resumeClient.jobTitle}</h1>
                     <h2>{this.state.resumeClient.name}</h2>
                     <h4>Зарплата</h4>
                     <p>{this.state.resumeClient.salary} руб.</p>
@@ -33,8 +33,6 @@ export class ResumeModal extends Component{
                     <p>{this.state.resumeClient.email}</p>
                     <h4>Образование</h4>
                     <p>{this.state.resumeClient.education}</p>
-                    <h4>Занятость</h4>
-                    <p>{this.state.resumeClient.employmentName}</p>
                     <h4>Пол</h4>
                     <p>{this.state.resumeClient.gender}</p>
                     <h4>Страна</h4>
